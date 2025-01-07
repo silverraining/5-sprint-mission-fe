@@ -1,0 +1,36 @@
+header {
+  background: #ffffff;
+  width: 100vw;
+}
+
+.header-wrapper {
+  max-width: 1400px;
+  width: 90vw;
+  margin: 0 auto;
+  padding: 8.5px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+@media (min-width: 744) and (max-width: 1199) {
+  .header-container {
+    gap: 20px;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 743px) {
+  .header-container {
+    gap: 10px;
+  }
+}
