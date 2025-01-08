@@ -40,7 +40,7 @@ const Market = () => {
     <div>
       <ProductBest bestColumns={bestColumns}></ProductBest>
       <ProductGeneral
-        productSize={generalColumns}
+        generalColumns={generalColumns}
         isMobile={isMobile}
       ></ProductGeneral>
     </div>

@@ -10,3 +10,8 @@
   color: #6b7280;
   cursor: pointer;
 }
+
+.page-item.active {
+  background: #2f80ed;
+  color: #fff;
+}

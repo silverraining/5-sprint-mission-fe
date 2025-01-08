@@ -7,27 +7,34 @@ import { useEffect, useState } from "react";
 import ic_search from "app/assets/icon/ic_search.png";
 import "./index.css";
 
-const ProductGeneral = ({ productSize, isMobile }) => {
-  const [pageSize, setPageSize] = useState(0);
+const ProductGeneral = ({ generalColumns, isMobile }) => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
   const [orderBy, setOrderBy] = useState("recent");
+  const [totalCount, setTotalCount] = useState(0);
 
   const getProducts = async ({ page, pageSize, orderBy, keyword }) => {
     const data = await GetProducts({ page, pageSize, orderBy, keyword });
     setProducts([...data.list]);
-    setPageSize(data.totalCount);
+    setTotalCount(data.totalCount);
     return data;
   };
 
   useEffect(() => {
     getProducts({});
   }, []);
-
   useEffect(() => {
-    getProducts({ orderBy, keyword: inputValue });
+    setPage(1);
   }, [inputValue, orderBy]);
+  useEffect(() => {
+    getProducts({
+      page,
+      pageSize: 2 * generalColumns,
+      orderBy,
+      keyword: inputValue,
+    });
+  }, [inputValue, orderBy, page, generalColumns]);
 
   return (
     <div className="product__general">
@@ -51,7 +58,7 @@ const ProductGeneral = ({ productSize, isMobile }) => {
         </div>
       </div>
       <div className="general-wrapper">
-        {products.slice(0, 2 * productSize).map((p) => (
+        {products.slice(0, 2 * generalColumns).map((p) => (
           <ProductItem
             key={p.id}
             name={p.name}
@@ -61,7 +68,12 @@ const ProductGeneral = ({ productSize, isMobile }) => {
           ></ProductItem>
         ))}
       </div>
-      <Pages changePage={(p) => setPage(p)} pageSize={pageSize}></Pages>
+      <Pages
+        page={page}
+        changePage={(p) => setPage(p)}
+        pageSize={2 * generalColumns}
+        maxPage={Math.ceil(totalCount / (2 * generalColumns))}
+      ></Pages>
     </div>
   );
 };

@@ -1,7 +1,11 @@
 import "./PageItem.css";
 
-const PageItem = ({ children }) => {
-  return <div className="page-item">{children}</div>;
+const PageItem = ({ children, page, handleCurrentPage, classNames }) => {
+  return (
+    <div className={classNames} onClick={() => handleCurrentPage(page)}>
+      {children}
+    </div>
+  );
 };
 
 export default PageItem;
