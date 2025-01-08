@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import ic_search from "app/assets/icon/ic_search.png";
 import "./index.css";
 
-const ProductGeneral = ({ productSize }) => {
+const ProductGeneral = ({ productSize, isMobile }) => {
   const [pageSize, setPageSize] = useState(0);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
@@ -34,17 +34,20 @@ const ProductGeneral = ({ productSize }) => {
       <div className="general-filter">
         <h1>판매 중인 상품</h1>
         <div className="filter-wrapper">
-          <img src={ic_search}></img>
-          <input
-            value={inputValue}
-            placeholder="검색할 상품을 입력해주세요"
-            onChange={(e) => setInputValue(e.target.value)}
-          ></input>
-          <Button size={"sm-42"}>상품 등록하기</Button>
+          <div className="search-wrapper">
+            <img src={ic_search}></img>
+            <input
+              value={inputValue}
+              placeholder="검색할 상품을 입력해주세요"
+              onChange={(e) => setInputValue(e.target.value)}
+            ></input>
+          </div>
           <SelectBox
             orderBy={orderBy}
             handleOrderBy={(o) => setOrderBy(o)}
+            isMobile={isMobile}
           ></SelectBox>
+          <Button size={"sm-42"}>상품 등록하기</Button>
         </div>
       </div>
       <div className="general-wrapper">

@@ -6,6 +6,7 @@ import ProductGeneral from "features/ProductGeneral";
 const Market = () => {
   const [bestColumns, setBestColumns] = useState(0);
   const [generalColumns, setgeneralColumns] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const updateColumns = () => {
@@ -13,10 +14,13 @@ const Market = () => {
       if (width > 1200) {
         setBestColumns(4);
         setgeneralColumns(5);
-      } else if (width > 768) {
+        setIsMobile(false);
+      } else if (width > 743) {
         setBestColumns(2);
         setgeneralColumns(3);
+        setIsMobile(false);
       } else {
+        setIsMobile(true);
         setBestColumns(1);
         setgeneralColumns(2);
       }
@@ -34,10 +38,11 @@ const Market = () => {
 
   return (
     <div>
-      <ProductBest
-        products={dummyData.list.slice(0, bestColumns)}
-      ></ProductBest>
-      <ProductGeneral productSize={generalColumns}></ProductGeneral>
+      <ProductBest bestColumns={bestColumns}></ProductBest>
+      <ProductGeneral
+        productSize={generalColumns}
+        isMobile={isMobile}
+      ></ProductGeneral>
     </div>
   );
 };
