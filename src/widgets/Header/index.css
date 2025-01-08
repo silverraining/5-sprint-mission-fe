@@ -1,6 +1,9 @@
 header {
   background: #ffffff;
   width: 100vw;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .header-wrapper {
@@ -23,7 +26,7 @@ header {
   gap: 24px;
 }
 
-@media (min-width: 744) and (max-width: 1199) {
+@media (min-width: 744px) and (max-width: 1199px) {
   .header-container {
     gap: 20px;
   }

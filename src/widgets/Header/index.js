@@ -12,9 +12,7 @@ const Header = () => {
             <Logo></Logo>
             <Nav></Nav>
           </div>
-          <Button className="header-login" size={"sm-42"}>
-            로그인
-          </Button>
+          <Button size={"sm-42"}>로그인</Button>
         </div>
       </div>
     </header>
