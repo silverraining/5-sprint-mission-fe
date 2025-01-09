@@ -1,33 +1,49 @@
 import ProductBest from "features/ProductBest";
 import { useState, useEffect } from "react";
-import { dummyData } from "features/ProductBest/dummy";
 import ProductGeneral from "features/ProductGeneral";
 
 const Market = () => {
-  const [bestColumns, setBestColumns] = useState(0);
-  const [generalColumns, setgeneralColumns] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  // 초기값 계산 함수
+  const getInitialColumns = () => {
+    const width = window.innerWidth;
+    if (width > 1200) {
+      return { best: 4, general: 5, isMobile: false };
+    } else if (width > 743) {
+      return { best: 2, general: 3, isMobile: false };
+    } else {
+      return { best: 1, general: 2, isMobile: true };
+    }
+  };
+
+  // 초기값 설정
+  const { best, general, isMobile } = getInitialColumns();
+  const [bestColumns, setBestColumns] = useState(best);
+  const [generalColumns, setGeneralColumns] = useState(general);
+  const [isMobileState, setIsMobileState] = useState(isMobile);
+
+  // console.log(
+  //   `start Market // general-column:${generalColumns} | best-column:${bestColumns}`
+  // );
 
   useEffect(() => {
     const updateColumns = () => {
       const width = window.innerWidth;
       if (width > 1200) {
         setBestColumns(4);
-        setgeneralColumns(5);
-        setIsMobile(false);
+        setGeneralColumns(5);
+        setIsMobileState(false);
       } else if (width > 743) {
         setBestColumns(2);
-        setgeneralColumns(3);
-        setIsMobile(false);
+        setGeneralColumns(3);
+        setIsMobileState(false);
       } else {
-        setIsMobile(true);
         setBestColumns(1);
-        setgeneralColumns(2);
+        setGeneralColumns(2);
+        setIsMobileState(true);
       }
     };
 
-    // 초기 렌더링 및 리사이즈 이벤트 리스너 등록
-    updateColumns();
+    // 리사이즈 이벤트 리스너 등록
     window.addEventListener("resize", updateColumns);
 
     // 클린업 (이벤트 리스너 제거)
@@ -36,12 +52,16 @@ const Market = () => {
     };
   }, []);
 
+  // console.log(
+  //   `return before // general-column:${generalColumns} | best-column:${bestColumns}`
+  // );
+
   return (
     <div>
       <ProductBest bestColumns={bestColumns}></ProductBest>
       <ProductGeneral
         generalColumns={generalColumns}
-        isMobile={isMobile}
+        isMobile={isMobileState}
       ></ProductGeneral>
     </div>
   );

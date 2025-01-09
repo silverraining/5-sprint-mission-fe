@@ -1,12 +1,6 @@
 import "./index.css";
 import product_default from "app/assets/images/product_default.png";
 import ic_heart_empty from "app/assets/icon/ic_heart_16x16_empty.png";
-import ic_heart_fill from "app/assets/icon/ic_heart_16x16_fill.png";
-
-/* 
-type : best | general
-handleClick : 상품 상세 조회 동작
-*/
 
 const ProductItem = ({
   images,
@@ -17,6 +11,7 @@ const ProductItem = ({
   type,
   handleClick,
 }) => {
+  // console.log(`start product item`);
   const classNames = `product product-${type}`;
   const isDefaultImage = !Boolean(images);
 

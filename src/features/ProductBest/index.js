@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "./index.css";
 
 const ProductBest = ({ bestColumns }) => {
+  // console.log("start in best");
   const [products, setProducts] = useState([]);
 
   const getProducts = async ({}) => {
@@ -18,7 +19,9 @@ const ProductBest = ({ bestColumns }) => {
     return data;
   };
 
+  // console.log("start in best >> before useEffect");
   useEffect(() => {
+    // console.log("in best :: " + bestColumns);
     getProducts({});
   }, [bestColumns]);
 

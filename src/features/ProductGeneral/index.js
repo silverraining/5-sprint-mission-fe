@@ -8,6 +8,7 @@ import ic_search from "app/assets/icon/ic_search.png";
 import "./index.css";
 
 const ProductGeneral = ({ generalColumns, isMobile }) => {
+  // console.log("start in genaral");
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
@@ -21,9 +22,9 @@ const ProductGeneral = ({ generalColumns, isMobile }) => {
     return data;
   };
 
-  useEffect(() => {
-    getProducts({});
-  }, []);
+  // console.log("start in genaral >> before useEffect");
+  // console.log(`page::${page} | orderBy::${orderBy}`);
+
   useEffect(() => {
     setPage(1);
   }, [inputValue, orderBy]);
@@ -34,7 +35,7 @@ const ProductGeneral = ({ generalColumns, isMobile }) => {
       orderBy,
       keyword: inputValue,
     });
-  }, [inputValue, orderBy, page, generalColumns]);
+  }, [page, generalColumns]);
 
   return (
     <div className="product__general">

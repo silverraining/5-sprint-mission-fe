@@ -21,8 +21,6 @@ const Pages = ({ page, changePage, pageSize, maxPage }) => {
     setPrePageSize(pageSize);
   }, [pageSize]);
 
-  useEffect(() => {}, [page]);
-
   return (
     <div className="pages">
       <PageItem

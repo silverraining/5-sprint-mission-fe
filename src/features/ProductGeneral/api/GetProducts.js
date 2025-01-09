@@ -9,8 +9,8 @@ const GetProducts = async ({
   keyword = "",
 }) => {
   const url = `${baseUrl}/products`;
-  // console.log(url);
-  // console.log(`page :: ${page} || pageSize :: ${pageSize}`);
+  // console.log(`api request::GetProducts | url::${url}`);
+
   try {
     const response = await axios.get(url, {
       params: { page, pageSize, orderBy, keyword },
