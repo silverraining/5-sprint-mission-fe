@@ -12,12 +12,12 @@ const ProductGeneral = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
+  const debouncedValue = hooks.useDebounce(inputValue, 300);
   const [orderBy, setOrderBy] = useState("recent");
   const [totalCount, setTotalCount] = useState(0);
   const media = hooks.useMediaQuery("");
   const initColumn = media === "pc" ? 5 : media === "tablet" ? 3 : 2;
   const [column, setColumn] = useState(initColumn);
-  const isMobile = media === "mobile";
 
   const loadProducts = async () => {
     const data = await GetProducts({
@@ -51,7 +51,7 @@ const ProductGeneral = () => {
   }, [media]);
   useEffect(() => {
     loadProducts();
-  }, [inputValue, orderBy, page, column]);
+  }, [debouncedValue, orderBy, page, column]);
 
   return (
     <div className="product__general">
