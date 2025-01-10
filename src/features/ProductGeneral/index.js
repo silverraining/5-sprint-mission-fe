@@ -4,7 +4,7 @@ import Pages from "./ui/Pages";
 import Button from "shared/buttons/Button";
 import SelectBox from "shared/SelectBox";
 import { useEffect, useState } from "react";
-import ic_search from "app/assets/icon/ic_search.png";
+import ic_search from "shared/assets/icon/ic_search.png";
 import { hooks } from "shared";
 import "./index.css";
 

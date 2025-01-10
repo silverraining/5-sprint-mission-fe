@@ -1,7 +1,7 @@
-import ic_facebook from "app/assets/icon/ic_facebook.png";
-import ic_instagram from "app/assets/icon/ic_instagram.png";
-import ic_twitter from "app/assets/icon/ic_twitter.png";
-import ic_youtube from "app/assets/icon/ic_youtube.png";
+import ic_facebook from "shared/assets/icon/ic_facebook.png";
+import ic_instagram from "shared/assets/icon/ic_instagram.png";
+import ic_twitter from "shared/assets/icon/ic_twitter.png";
+import ic_youtube from "shared/assets/icon/ic_youtube.png";
 import "./SnsLink.css";
 
 const SnsLink = () => {

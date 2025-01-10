@@ -1,5 +1,5 @@
-import logo from "app/assets/images/logo.png";
-import logo_text from "app/assets/images/logo_text.png";
+import logo from "shared/assets/images/logo.png";
+import logo_text from "shared/assets/images/logo_text.png";
 import { useNavigate } from "react-router";
 import "./Logo.css";
 

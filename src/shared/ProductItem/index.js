@@ -1,6 +1,6 @@
 import "./index.css";
-import product_default from "app/assets/images/product_default.png";
-import ic_heart_empty from "app/assets/icon/ic_heart_16x16_empty.png";
+import product_default from "shared/assets/images/product_default.png";
+import ic_heart_empty from "shared/assets/icon/ic_heart_16x16_empty.png";
 
 const ProductItem = ({
   images,

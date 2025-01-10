@@ -1,6 +1,6 @@
 import "./index.css";
-import ic_open_seletor from "app/assets/icon/ic_open_selector.png";
-import ic_select_box from "app/assets/icon/ic_select_box.png";
+import ic_open_seletor from "shared/assets/icon/ic_open_selector.png";
+import ic_select_box from "shared/assets/icon/ic_select_box.png";
 import { hooks } from "shared";
 import { useState } from "react";
 
