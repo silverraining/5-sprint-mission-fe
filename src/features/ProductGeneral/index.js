@@ -5,37 +5,53 @@ import Button from "shared/buttons/Button";
 import SelectBox from "shared/SelectBox";
 import { useEffect, useState } from "react";
 import ic_search from "app/assets/icon/ic_search.png";
+import { hooks } from "shared";
 import "./index.css";
 
-const ProductGeneral = ({ generalColumns, isMobile }) => {
-  // console.log("start in genaral");
+const ProductGeneral = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
   const [orderBy, setOrderBy] = useState("recent");
   const [totalCount, setTotalCount] = useState(0);
+  const media = hooks.useMediaQuery("");
+  const initColumn = media === "pc" ? 5 : media === "tablet" ? 3 : 2;
+  const [column, setColumn] = useState(initColumn);
+  const isMobile = media === "mobile";
 
-  const getProducts = async ({ page, pageSize, orderBy, keyword }) => {
-    const data = await GetProducts({ page, pageSize, orderBy, keyword });
-    setProducts([...data.list]);
-    setTotalCount(data.totalCount);
-    return data;
-  };
-
-  // console.log("start in genaral >> before useEffect");
-  // console.log(`page::${page} | orderBy::${orderBy}`);
-
-  useEffect(() => {
-    setPage(1);
-  }, [inputValue, orderBy]);
-  useEffect(() => {
-    getProducts({
+  const loadProducts = async () => {
+    const data = await GetProducts({
       page,
-      pageSize: 2 * generalColumns,
+      pageSize: 2 * column,
       orderBy,
       keyword: inputValue,
     });
-  }, [page, generalColumns]);
+
+    setProducts([...data.list]);
+    setTotalCount(data.totalCount);
+
+    return data;
+  };
+
+  const handleFilteringByInputValue = (e) => {
+    setInputValue(e.target.value);
+    setPage(1);
+  };
+  const handleFilteringByOrderBy = (o) => {
+    setOrderBy(o);
+    setPage(1);
+  };
+  const handleChangePage = (p) => {
+    if (page === p) return;
+    setPage(p);
+  };
+
+  useEffect(() => {
+    setColumn(initColumn);
+  }, [media]);
+  useEffect(() => {
+    loadProducts();
+  }, [inputValue, orderBy, page, column]);
 
   return (
     <div className="product__general">
@@ -47,19 +63,18 @@ const ProductGeneral = ({ generalColumns, isMobile }) => {
             <input
               value={inputValue}
               placeholder="검색할 상품을 입력해주세요"
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => handleFilteringByInputValue(e)}
             ></input>
           </div>
           <SelectBox
             orderBy={orderBy}
-            handleOrderBy={(o) => setOrderBy(o)}
-            isMobile={isMobile}
+            handleOrderBy={(o) => handleFilteringByOrderBy(o)}
           ></SelectBox>
           <Button size={"sm-42"}>상품 등록하기</Button>
         </div>
       </div>
       <div className="general-wrapper">
-        {products.slice(0, 2 * generalColumns).map((p) => (
+        {products.slice(0, 2 * column).map((p) => (
           <ProductItem
             key={p.id}
             name={p.name}
@@ -71,9 +86,8 @@ const ProductGeneral = ({ generalColumns, isMobile }) => {
       </div>
       <Pages
         page={page}
-        changePage={(p) => setPage(p)}
-        pageSize={2 * generalColumns}
-        maxPage={Math.ceil(totalCount / (2 * generalColumns))}
+        changePage={(p) => handleChangePage(p)}
+        maxPage={Math.ceil(totalCount / (2 * column))}
       ></Pages>
     </div>
   );

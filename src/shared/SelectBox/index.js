@@ -1,12 +1,15 @@
 import "./index.css";
 import ic_open_seletor from "app/assets/icon/ic_open_selector.png";
 import ic_select_box from "app/assets/icon/ic_select_box.png";
+import { hooks } from "shared";
 import { useState } from "react";
 
-const SelectBox = ({ orderBy, handleOrderBy, isMobile }) => {
+const SelectBox = ({ orderBy, handleOrderBy }) => {
   const [isShowOption, setIsShowOption] = useState(false);
+  const media = hooks.useMediaQuery("");
+  const isMobile = media === "mobile";
 
-  const handleOnChangeSelectValue = (e) => {
+  const handleOnClickSelectValue = (e) => {
     const value = e.target.dataset.key;
     handleOrderBy(value);
     setIsShowOption(!isShowOption);
@@ -30,10 +33,10 @@ const SelectBox = ({ orderBy, handleOrderBy, isMobile }) => {
         style={{ display: isShowOption ? "block" : "none" }}
         className="seletor-options"
       >
-        <li data-key="recent" onClick={handleOnChangeSelectValue}>
+        <li data-key="recent" onClick={handleOnClickSelectValue}>
           최신순
         </li>
-        <li data-key="favorite" onClick={handleOnChangeSelectValue}>
+        <li data-key="favorite" onClick={handleOnClickSelectValue}>
           좋아요순
         </li>
       </ul>

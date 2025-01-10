@@ -1,35 +1,40 @@
 import ProductItem from "shared/ProductItem";
 import GetProducts from "features/ProductGeneral/api/GetProducts";
 import { useEffect, useState } from "react";
+import { hooks } from "shared";
 import "./index.css";
 
-const ProductBest = ({ bestColumns }) => {
-  // console.log("start in best");
+const ProductBest = () => {
   const [products, setProducts] = useState([]);
+  const media = hooks.useMediaQuery("");
+  const initColumn = media === "pc" ? 4 : media === "tablet" ? 2 : 1;
+  const [column, setColumn] = useState(initColumn);
 
-  const getProducts = async ({}) => {
+  const loadProducts = async ({}) => {
     const data = await GetProducts({
       page: 1,
-      pageSize: bestColumns,
+      pageSize: column,
       orderBy: "favorite",
     });
 
-    const list = [...data.list];
-    setProducts(list);
+    setProducts([...data.list]);
+
     return data;
   };
 
-  // console.log("start in best >> before useEffect");
   useEffect(() => {
-    // console.log("in best :: " + bestColumns);
-    getProducts({});
-  }, [bestColumns]);
+    setColumn(initColumn);
+  }, [media]);
+
+  useEffect(() => {
+    loadProducts({});
+  }, [column]);
 
   return (
     <div className="product__best">
       <h1>베스트 상품</h1>
       <div className="best-wrapper">
-        {products.slice(0, bestColumns).map((p) => (
+        {products.slice(0, column).map((p) => (
           <ProductItem
             key={p.id}
             name={p.name}

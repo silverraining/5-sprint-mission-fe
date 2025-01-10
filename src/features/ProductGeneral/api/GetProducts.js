@@ -9,7 +9,6 @@ const GetProducts = async ({
   keyword = "",
 }) => {
   const url = `${baseUrl}/products`;
-  // console.log(`api request::GetProducts | url::${url}`);
 
   try {
     const response = await axios.get(url, {

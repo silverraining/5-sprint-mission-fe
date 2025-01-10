@@ -11,7 +11,6 @@ const ProductItem = ({
   type,
   handleClick,
 }) => {
-  // console.log(`start product item`);
   const classNames = `product product-${type}`;
   const isDefaultImage = !Boolean(images);
 
