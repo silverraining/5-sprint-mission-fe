@@ -111,7 +111,7 @@ const ItemList = () => {
           </div>
           <button
             onClick={toggleMenu}
-            className="col-span-1 order-4 border border-gray-300 w-[42px] h-[42px] p-2 rounded-xl ml-auto sm:hidden justify-self-end"
+            className="col-span-1 order-4 border top-[calc(100%-10px)] border-gray-300 w-[42px] h-[42px] p-2 rounded-xl ml-auto sm:hidden justify-self-end"
           >
             <img src={HamburgerIcon} alt="드롭다운햄버거" className="w-6 h-6" />
           </button>
