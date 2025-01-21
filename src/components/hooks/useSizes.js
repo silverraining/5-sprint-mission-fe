@@ -23,18 +23,13 @@ export const useIsTablet = (minBreakpoint = 768, maxBreakpoint = 1024) => {
   const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
-    const handleResize = debounce(() => {
+    const handleResize = () =>
       setIsTablet(
         window.innerWidth >= minBreakpoint && window.innerWidth <= maxBreakpoint
       );
-    }, 200); // 200ms 디바운스 적용
-
-    handleResize(); // 초기 실행
+    handleResize();
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, [minBreakpoint, maxBreakpoint]);
 
   return isTablet;

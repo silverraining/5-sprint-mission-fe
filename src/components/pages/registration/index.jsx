@@ -8,7 +8,7 @@ import axios from "axios";
 
 const URL = "https://five-sprint-mission-be-zs3c.onrender.com/products";
 
-const PageContainer = styled.div`
+const PageContainer = styled.form`
   width: 100%;
   padding: 20px;
   max-width: 1200px;
@@ -115,6 +115,7 @@ function RegistrationPage() {
       price,
       tags,
     };
+    console.log(productData);
 
     try {
       const response = await axios.post(URL, productData);
@@ -130,7 +131,7 @@ function RegistrationPage() {
     <PageContainer>
       <TitleSection>
         <Title>상품 등록하기</Title>
-        <Button onClick={handleSubmit}>등록</Button>
+        <Button onSubmit={handleSubmit}>등록</Button>
       </TitleSection>
 
       <Section>
