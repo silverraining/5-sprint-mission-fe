@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { debounce } from "lodash";
-export const useIsMobile = (breakpoint = 768) => {
+
+export const useIsMobile = (breakpoint = 680) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export const useIsMobile = (breakpoint = 768) => {
   return isMobile;
 };
 
-export const useIsTablet = (minBreakpoint = 768, maxBreakpoint = 1024) => {
+export const useIsTablet = (minBreakpoint = 680, maxBreakpoint = 1024) => {
   const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {

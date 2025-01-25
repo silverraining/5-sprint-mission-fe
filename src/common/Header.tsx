@@ -1,6 +1,6 @@
 import logoImg from "../assets/images/logo.png";
 import styled from "styled-components";
-import Button from "./Button";
+import Button from "../components/Button";
 import { colors } from "../assets/theme";
 import React, { ReactNode } from "react";
 
@@ -15,10 +15,10 @@ export const LogoSection = () => (
 );
 export const NavSection = () => (
   <Nav>
-    <NavLink href="">
+    <NavLink href="/articles">
       <NavText>자유게시판</NavText>
     </NavLink>
-    <NavLink href="">
+    <NavLink href="/items">
       <NavText>중고마켓</NavText>
     </NavLink>
   </Nav>
@@ -46,19 +46,20 @@ const StyledHeader = styled.header`
   position: sticky;
   background-color: white;
   top: 8.5px;
-  width: 100%;
+  width: 100vw;
+
+  overflow-x: hidden;
   border-bottom: 1px solid #dfdfdf;
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-
   align-items: center;
   max-width: 1920px;
-  width: 90%;
+  width: 80vw;
   margin: 0 auto;
-  padding: 0 200px;
+  padding: 1rem;
 `;
 
 const HeaderLeft = styled.div`
@@ -83,6 +84,7 @@ const Logo = styled.img`
   @media (min-width: 640px) {
     width: 128px;
     height: 48px;
+    margin-right: 24px;
   }
 
   @media (min-width: 1024px) {

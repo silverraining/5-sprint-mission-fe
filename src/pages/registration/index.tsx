@@ -3,19 +3,29 @@ import { styled } from "styled-components";
 import { colors } from "../../assets/theme";
 import PostForm from "./PostForm";
 
+//입력값 유효성 검증 및 에러메시지 처리 추가 필요
+
 const RegistrationPage: React.FC = () => {
+  const handleSubmit = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.preventDefault(); //폼 기본 제출 동작 방지
+    // PostForm의 form태그 제출 강제
+    (document.getElementById("post-form") as HTMLFormElement)?.requestSubmit(); //requestSubmit() ->특정 폼을 Javascript로 제출할 때 사용하는 메서드
+  };
   return (
     <PageContainer>
       <TitleSection>
         <Title>상품 등록하기</Title>
-        {/* <Button onSubmit={handleSubmit}>등록</Button> */}
+        <Button onClick={handleSubmit}>등록</Button>
+        {/* <Button onSubmit={submit}>등록</Button> */}
       </TitleSection>
       <PostForm />
     </PageContainer>
   );
 };
 export default RegistrationPage;
-const PageContainer = styled.form`
+const PageContainer = styled.div`
   width: 100%;
   padding: 20px;
   max-width: 1200px;

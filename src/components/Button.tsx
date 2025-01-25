@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors } from "../assets/theme";
 
 const Button = styled.button`
-  height: 42px;
+  height: 100%px;
   padding: 8px 23px;
   font-size: 16px;
   font-weight: Semibold;

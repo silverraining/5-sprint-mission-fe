@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import LandingImg from "../assets/images/homeImage/Img_home_landing.png";
-import HotItemImg from "../assets/images/homeImage/Img_home_01.png";
-import SearchImg from "../assets/images/homeImage/Img_home_02-1.png";
-import RegisterImg from "../assets/images/homeImage/Img_home_03.png";
-import HomeImg from "../assets/images/homeImage/Img_home_04.png";
-import { colors } from "../assets/theme";
-import { useIsMobile, useIsTablet } from "../components/hooks/useSizes.js";
+import LandingImg from "../../assets/images/homeImage/Img_home_landing.png";
+import HotItemImg from "../../assets/images/homeImage/Img_home_01.png";
+import SearchImg from "../../assets/images/homeImage/Img_home_02-1.png";
+import RegisterImg from "../../assets/images/homeImage/Img_home_03.png";
+import HomeImg from "../../assets/images/homeImage/Img_home_04.png";
+import { colors } from "../../assets/theme";
+import { useIsMobile, useIsTablet } from "../../components/hooks/useSizes";
 import React from "react";
 import { Link } from "react-router-dom";
-import Button from "../common/Button";
 
 const LandingPage: React.FC = () => {
   const isMobile = useIsMobile();

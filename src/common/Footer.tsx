@@ -4,9 +4,8 @@ import twitterIcon from "../assets/images/ic_twitter.png";
 import youtubeIcon from "../assets/images/ic_youtube.png";
 import instagramIcon from "../assets/images/ic_instagram.png";
 import React from "react";
-import { useIsMobile } from "../components/hooks/useSizes.js";
 type StyledFooterProps = {
-  isMobile: boolean;
+  $isMobile: boolean;
 };
 const socialLinks = [
   { href: "https://m.facebook.com/", src: facebookIcon, alt: "facebook" },
@@ -52,38 +51,45 @@ export const FooterLinks = () => {
   );
 };
 
-const Footer = () => {
-  const isMobile = useIsMobile();
+type FooterProps = {
+  $isMobile: boolean;
+};
 
+const Footer: React.FC<FooterProps> = ({ $isMobile }) => {
   return (
-    <StyledFooter isMobile={isMobile}>
-      {isMobile ? (
-        <>
-          <FooterContainer>
-            <FooterLinks />
-            <SocialLinks />
-          </FooterContainer>
-          <FooterMark />
-        </>
-      ) : (
-        <>
-          <FooterContainer>
+    <FooterWrapper $isMobile={$isMobile}>
+      <StyledFooter $isMobile={$isMobile}>
+        {$isMobile ? (
+          <>
+            <FooterContainer>
+              <FooterLinks />
+              <SocialLinks />
+            </FooterContainer>
             <FooterMark />
-            <FooterLinks />
-            <SocialLinks />
-          </FooterContainer>
-        </>
-      )}
-    </StyledFooter>
+          </>
+        ) : (
+          <>
+            <FooterContainer>
+              <FooterMark />
+              <FooterLinks />
+              <SocialLinks />
+            </FooterContainer>
+          </>
+        )}
+      </StyledFooter>
+    </FooterWrapper>
   );
 };
 export default Footer;
 
-// Styled Components 정의
+const FooterWrapper = styled.div<{ $isMobile: boolean }>`
+  background-color: #111827;
+  overflow-x: hidden;
+`;
 const StyledFooter = styled.footer<StyledFooterProps>`
   background-color: #111827;
   text-align: center;
-  width: 100%;
+  width: 90vw;
   height: 10rem;
   font-size: 1rem;
   font-weight: normal;
