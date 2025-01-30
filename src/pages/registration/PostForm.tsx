@@ -4,11 +4,15 @@ import { colors } from "../../assets/theme";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import TagHandler from "./TagHandler";
-
+import useValidation from "../../components/hooks/useValidation";
+import {
+  validateName,
+  validateDescription,
+  validatePrice,
+} from "./PostFormvalidation";
 //상품 소개 입력폼 커서를 placeholder의 위치에 뜨게 하는 방법?
 
 interface ProductData {
-  //입력데이터 정의
   name: string;
   description: string;
   price: number | string; // 입력 중에는 string, 제출 시 number
@@ -53,6 +57,10 @@ function PostForm() {
     setData(newdata);
     console.log(newdata);
   }
+
+  const InputFieldValidation = ({ validateFn, placeholder }) => {
+    const { value, error, onChange, onBlur } = useValidation(validateFn);
+  };
 
   return (
     <>
@@ -107,32 +115,29 @@ interface InputFormWrapperProps {
   isDescription?: boolean;
 }
 
-const InputFormWrapper = styled.input.withConfig({
-  shouldForwardProp: (prop) => !["isDescription"].includes(prop),
-})<InputFormWrapperProps>`
+const ConditionalInput = ({ isDescription, ...props }) => {
+  return isDescription ? <textarea {...props} /> : <input {...props} />;
+};
+
+const InputFormWrapper = styled(ConditionalInput)<InputFormWrapperProps>`
   padding: 10px;
   width: 100%;
   font-size: 16px;
   background-color: ${colors.gray2};
   border: none;
   border-radius: 10px;
-  height: ${({ isDescription }) => (isDescription ? "282px" : "30px")};
+  height: ${({ isDescription }) =>
+    isDescription ? "282px" : "30px"}; // For textarea
   display: block;
   &::placeholder {
     color: ${colors.gray5};
   }
   ${({ isDescription }) =>
     isDescription &&
-    `
-      padding-top: 1rem;  
+    ` 
+      padding-top: 1rem;
       text-align: left;
-      &::placeholder {
-        position: absolute;
-        top: 15px;  
-      }
-
-  
-  `}
+    `}
 `;
 
 const Section = styled.div`

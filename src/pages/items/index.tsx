@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import MultiBar from "./MultiBar";
 import { useIsMobile, useIsTablet } from "../../components/hooks/useSizes";
 import ItemCard from "./ItemCard";
