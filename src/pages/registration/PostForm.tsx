@@ -1,16 +1,9 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { styled } from "styled-components";
-import { colors } from "../../assets/theme";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import TagHandler from "./TagHandler";
-import useValidation from "../../components/hooks/useValidation";
-import {
-  validateName,
-  validateDescription,
-  validatePrice,
-} from "./PostFormvalidation";
-//상품 소개 입력폼 커서를 placeholder의 위치에 뜨게 하는 방법?
+import ValidatedInput from "./ValidateInput";
 
 interface ProductData {
   name: string;
@@ -58,10 +51,6 @@ function PostForm() {
     console.log(newdata);
   }
 
-  const InputFieldValidation = ({ validateFn, placeholder }) => {
-    const { value, error, onChange, onBlur } = useValidation(validateFn);
-  };
-
   return (
     <>
       {/* 폼태그에 id값 설정 -> index.tsx에서 document.getElementById("post-form")는
@@ -69,30 +58,39 @@ function PostForm() {
       <form id="post-form" onSubmit={submit}>
         <Section>
           <Label>상품명</Label>
-          <InputFormWrapper
-            onChange={(e) => handle(e)}
+          <ValidatedInput
             id="name"
             placeholder="상품명을 입력하세요"
             type="text"
+            validateFn={validateName}
+            onValidChange={(value) =>
+              setData((prev) => ({ ...prev, name: value }))
+            }
           />
         </Section>
         <Section>
           <Label>상품 소개</Label>
-          <InputFormWrapper
-            onChange={(e) => handle(e)}
+          <ValidatedInput
             id="description"
             placeholder="상품 소개를 입력하세요"
             type="text"
             isDescription
+            validateFn={validateDescription}
+            onValidChange={(value) =>
+              setData((prev) => ({ ...prev, description: value }))
+            }
           />
         </Section>
         <Section>
           <Label>판매가격</Label>
-          <InputFormWrapper
-            onChange={(e) => handle(e)}
+          <ValidatedInput
             id="price"
             placeholder="판매가격을 입력하세요"
             type="text"
+            validateFn={(value) => validatePrice(parseFloat(value))}
+            onValidChange={(value) =>
+              setData((prev) => ({ ...prev, price: parseFloat(value) || "" }))
+            }
           />
         </Section>
         <Section>
@@ -111,34 +109,24 @@ function PostForm() {
 
 export default PostForm;
 
-interface InputFormWrapperProps {
-  isDescription?: boolean;
-}
-
-const ConditionalInput = ({ isDescription, ...props }) => {
-  return isDescription ? <textarea {...props} /> : <input {...props} />;
+export const validateName = (value: string): string | null => {
+  if (!value.trim()) return "상품명을 입력하세요.";
+  if (value.length > 10) return "10자 이내로 입력해주세요";
+  return null; // 유효할 경우 null 반환
 };
 
-const InputFormWrapper = styled(ConditionalInput)<InputFormWrapperProps>`
-  padding: 10px;
-  width: 100%;
-  font-size: 16px;
-  background-color: ${colors.gray2};
-  border: none;
-  border-radius: 10px;
-  height: ${({ isDescription }) =>
-    isDescription ? "282px" : "30px"}; // For textarea
-  display: block;
-  &::placeholder {
-    color: ${colors.gray5};
-  }
-  ${({ isDescription }) =>
-    isDescription &&
-    ` 
-      padding-top: 1rem;
-      text-align: left;
-    `}
-`;
+export const validateDescription = (value: string): string | null => {
+  if (!value.trim()) return "상품 소개를 입력해주세요";
+  if (value.length < 10) return "10자 이상 입력해주세요";
+  return null;
+};
+
+export const validatePrice = (value: number | null): string | null => {
+  if (value === null) return "판매가격을 입력하세요.";
+  if (isNaN(value)) return "숫자로 입력해주세요";
+  if (value > 1000000000) return "가격을 10억 이하로 입력해주세요";
+  return null;
+};
 
 const Section = styled.div`
   margin-bottom: 20px;
