@@ -18,7 +18,7 @@ const BestArticleCard = ({ articles }) => {
       {articles.map((article) => (
         <div
           key={article.articleId}
-          className="relative w-full max-w-[384px] mx-auto max-h-[198px] min-h-[169px] py-8 bg-[#F9FAFB] shadow-lg rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300"
+          className="relative w-full max-w-[384px] mx-auto max-h-[198px] min-h-[169px] bg-[#F9FAFB] shadow-lg rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300"
           onClick={() => router.push(`/community/${article.articleId}`)}
         >
           {/* ✅ Best 뱃지 */}
@@ -38,7 +38,7 @@ const BestArticleCard = ({ articles }) => {
           </div>
 
           {/* ✅ 제목 & 이미지 */}
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 mt-3">
             <div className="flex items-center justify-between">
               <p className="text-gray-800 text-[20px] font-semibold flex-1 p-4 max-w-[256px] truncate">
                 {article.title}
@@ -55,9 +55,9 @@ const BestArticleCard = ({ articles }) => {
           </div>
 
           {/* ✅ 하단 정보 */}
-          <div className="text-gray-500 text-sm flex justify-between px-4">
+          <div className="text-gray-500 text-sm flex justify-between px-4 mt-7">
             <div className="flex gap-2 ">
-              <span>{article.author || "익명"}</span>
+              <span>{article.author || "멋쟁이 판다"}</span>
               <Image
                 src="/ic_heart.svg"
                 alt="heart icon"

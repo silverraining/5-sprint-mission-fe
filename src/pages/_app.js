@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import Head from "next/head";
 import Container from "@/components/Container";
 import GNB from "@/components/GNB";
-
+import Footer from "@/components/Footer";
 export default function App({ Component, pageProps }) {
   return (
     <>
@@ -13,9 +13,10 @@ export default function App({ Component, pageProps }) {
         {/* <style>{fontStyle}</style> */}
       </Head>
       <GNB />
-      <Container page className="h-screen">
+      <Container page className="min-h-screen">
         <Component {...pageProps} />
       </Container>
+      <Footer />
     </>
   );
 }

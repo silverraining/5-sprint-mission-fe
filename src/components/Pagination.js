@@ -22,11 +22,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-6">
+    <div className="flex justify-center items-center gap-2 mt-4 mb-6">
+      {/* 이전 버튼, currentPage가 5 이상일 때만 표시 */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="w-10 h-10 bg-gray-300 disabled:opacity-50 rounded-full text-sm font-semibold hover:bg-gray-400 transition duration-200"
+        className={`w-10 h-10 bg-gray-300 disabled:opacity-50 rounded-full text-sm font-semibold hover:bg-gray-400 transition duration-200 ${
+          currentPage <= 5 ? "invisible" : ""
+        }`}
       >
         ◀
       </button>

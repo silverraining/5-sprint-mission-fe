@@ -1,10 +1,17 @@
 import instance from "@/pages/api/axios";
 
-// 게시글 목록 조회
-export const fetchArticles = async (orderBy, page, limit = 10) => {
+// 게시글 목록 조회 (검색 기능 추가)
+export const fetchArticles = async (
+  orderBy,
+  page,
+  limit = 10,
+  keyword = ""
+) => {
   try {
     const response = await fetch(
-      `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}`
+      `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}&keyword=${encodeURIComponent(
+        keyword
+      )}`
     );
     const data = await response.json();
     return data;

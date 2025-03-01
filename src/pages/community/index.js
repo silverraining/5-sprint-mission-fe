@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ArticleList from "@/components/ArticleList";
 import Select from "@/components/Select";
 import SearchBar from "@/components/SearchBar";
@@ -7,6 +7,7 @@ import Pagination from "@/components/Pagination";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { fetchArticles } from "@/pages/api/articles";
+
 const options = [
   { label: "최신순", value: "createdAt" },
   { label: "좋아요순", value: "favorite" },
@@ -19,7 +20,6 @@ export default function Community({
 }) {
   const [orderBy, setOrderBy] = useState(initialOrderBy || "createdAt");
   const [sortedResults, setSortedResults] = useState(results || []);
-  const [filteredResults, setFilteredResults] = useState(results || []);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [bestCount, setBestCount] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,38 +51,36 @@ export default function Community({
     .sort((a, b) => b.favoriteCnt - a.favoriteCnt)
     .slice(0, bestCount);
 
-  // 정렬 또는 페이지 변경 시 다시 데이터 가져오기
+  // 🔹 서버에서 데이터 가져오기
   useEffect(() => {
     const getArticles = async () => {
       try {
-        const limit = 10; // 한 페이지당 게시글 개수
-        const data = await fetchArticles(orderBy, currentPage, limit);
+        const limit = 6;
+        const data = await fetchArticles(
+          orderBy,
+          currentPage,
+          limit,
+          searchKeyword
+        ); // ✅ keyword 추가
 
         setSortedResults(data.list || []);
-
-        // 🔹 totalPages 직접 계산
-        const calculatedTotalPages = Math.ceil(data.totalCount / limit);
-        console.log("📌 계산된 totalPages:", calculatedTotalPages);
-
-        setTotalPages(calculatedTotalPages || 1);
+        setTotalPages(Math.ceil(data.totalCount / limit) || 1);
       } catch (error) {
         console.error("❌ 게시글 불러오기 실패:", error);
       }
     };
 
     getArticles();
-  }, [orderBy, currentPage]);
+  }, [orderBy, currentPage, searchKeyword]); // ✅ searchKeyword 변경 시 API 다시 호출
 
-  // 🔹 검색 필터링
-  useEffect(() => {
-    const filtered = searchKeyword
-      ? sortedResults.filter((item) =>
-          item.title?.toLowerCase().includes(searchKeyword.toLowerCase())
-        )
-      : sortedResults;
+  // 🔹 검색 필터링 및 페이지네이션 적용
+  const filteredResults = useMemo(() => {
+    if (!searchKeyword) return sortedResults; // ✅ 검색어 없으면 그대로 반환
 
-    setFilteredResults(filtered || []);
-  }, [searchKeyword, sortedResults]);
+    return sortedResults.filter((item) =>
+      item.title?.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+  }, [searchKeyword, sortedResults]); // ✅ `currentPage`는 필요 없음
 
   // 🔹 페이지 변경 핸들러
   const handlePageChange = (newPage) => {
@@ -111,6 +109,7 @@ export default function Community({
         {/* 검색바 & 정렬 버튼 */}
         <div className="w-full flex justify-between items-center mb-4">
           <SearchBar value={searchKeyword} onChange={setSearchKeyword} />
+
           <Select selected={orderBy} onChange={setOrderBy} options={options} />
         </div>
 
@@ -136,8 +135,9 @@ export async function getServerSideProps(context) {
   const orderBy = query.orderBy || "createdAt";
 
   try {
+    const limit = 6; // ✅ 한 페이지당 6개
     const response = await fetch(
-      `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}`
+      `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}`
     );
     const data = await response.json();
 
@@ -145,7 +145,7 @@ export async function getServerSideProps(context) {
       props: {
         results: data.list || [],
         orderBy,
-        totalPages: data.totalPages || 1,
+        totalPages: Math.ceil(data.totalCount / limit) || 1, // ✅ 총 페이지 수 다시 계산
       },
     };
   } catch (error) {

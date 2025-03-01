@@ -3,18 +3,13 @@ import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import Article from "./Article";
 
-const randomUsernames = ["스폰지밥", "뚱이", "다람이", "집게사장", "징징이"];
-
 export default function ArticleList({ results = [] }) {
   const [articles, setArticles] = useState(results);
 
   useEffect(() => {
-    console.log("📌 results:", results);
     const updatedArticles = results.map((article) => ({
       ...article,
-      username:
-        article.username ||
-        randomUsernames[Math.floor(Math.random() * randomUsernames.length)],
+      username: article.username || "귀여운 판다", // 예시로 정적인 값 사용
     }));
     setArticles(updatedArticles);
   }, [results]);

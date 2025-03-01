@@ -24,7 +24,7 @@ const Select = ({ value = "createdAt", onChange, options }) => {
         )}
       >
         {selectedLabel}
-        <Image src="/ic_toggle.png" alt="toggle" width={20} height={20} />
+        <Image src="/ic_toggle.png" alt="toggle" width={30} height={30} />
       </button>
       {isOpen && (
         <div className="absolute bg-white w-[160px] rounded-[15px] border border-f-gray-200 z-10 flex flex-col mt-[4px] shadow-md">
