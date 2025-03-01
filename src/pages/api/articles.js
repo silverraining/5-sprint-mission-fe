@@ -64,13 +64,13 @@ export const updateArticle = async (id, articleData) => {
   }
 };
 
-// // 게시글 삭제하기
-// export const deleteArticle = async (id) => {
-//   try {
-//     const response = await instance.delete(`/articles/${id}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error deleting article:', error);
-//     throw error;
-//   }
-// };
+// 게시글 삭제하기
+export const deleteArticle = async (id) => {
+  try {
+    const response = await instance.delete(`/articles/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting article:", error);
+    throw error;
+  }
+};

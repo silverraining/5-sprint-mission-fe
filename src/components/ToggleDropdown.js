@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { deleteArticle } from "@/pages/api/articles";
 
 export default function ToggleDropdown({ onEdit, onDelete, articleId }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,13 @@ export default function ToggleDropdown({ onEdit, onDelete, articleId }) {
       onEdit(articleId);
     }
   };
+
+  const handleDelete = () => {
+    if (articleId) {
+      onDelete(articleId); // 부모 컴포넌트로 삭제 요청 전달
+    }
+  };
+
   return (
     <div className="relative">
       {/* Image used as the toggle button */}
@@ -38,7 +46,7 @@ export default function ToggleDropdown({ onEdit, onDelete, articleId }) {
             </li>
             <li
               className="flex items-center justify-center h-1/2 p-2 hover:bg-gray-200 cursor-pointer"
-              onClick={onDelete}
+              onClick={handleDelete}
             >
               삭제하기
             </li>

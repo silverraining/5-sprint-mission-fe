@@ -9,6 +9,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import CommentList from "@/components/CommentList";
 import { Textarea } from "@/components/ui/textarea";
+import { deleteArticle } from "@/pages/api/articles";
 
 export default function ArticleDetailPage() {
   const router = useRouter();
@@ -60,7 +61,19 @@ export default function ArticleDetailPage() {
       router.push(`/community/article-edit?id=${articleId}`);
     }
   };
-
+  // 삭제 처리 함수
+  const handleDelete = async (articleId) => {
+    if (confirm("게시글을 삭제하시겠습니까?")) {
+      try {
+        await deleteArticle(articleId); // 삭제 API 호출
+        alert("정상적으로 삭제되었습니다.");
+        router.push("/community"); // 삭제 후 목록 페이지로 이동
+      } catch (error) {
+        console.error("게시글 삭제 실패:", error);
+        alert("게시글 삭제 중 오류가 발생했습니다.");
+      }
+    }
+  };
   return (
     <>
       <section className="pb-2">
@@ -69,6 +82,7 @@ export default function ArticleDetailPage() {
           <ToggleDropdown
             onEdit={handleEdit} // 수정 함수 전달
             articleId={id} // ID 전달
+            onDelete={handleDelete}
           />
         </div>
         <div className="flex items-center gap-4">
