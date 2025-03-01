@@ -53,14 +53,23 @@ export default function ArticleDetailPage() {
   if (loading) return <div>⏳ 로딩 중...</div>;
   if (!article) return <div>❌ 게시글을 불러올 수 없습니다.</div>;
 
-  const username = article.username || "스폰지밥";
+  const username = article.username || "귀여운 판다";
+  // 수정 페이지로 이동하는 함수
+  const handleEdit = (articleId) => {
+    if (articleId) {
+      router.push(`/community/article-edit?id=${articleId}`);
+    }
+  };
 
   return (
     <>
       <section className="pb-2">
         <div className="flex justify-between pb-2">
           <h2 className="font-bold text-xl">{article.title}</h2>
-          <ToggleDropdown />
+          <ToggleDropdown
+            onEdit={handleEdit} // 수정 함수 전달
+            articleId={id} // ID 전달
+          />
         </div>
         <div className="flex items-center gap-4">
           <Image

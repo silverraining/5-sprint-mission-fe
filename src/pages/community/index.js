@@ -46,10 +46,12 @@ export default function Community({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 🔹 좋아요 순 상위 게시글
-  const bestArticles = [...(sortedResults || [])]
-    .sort((a, b) => b.favoriteCnt - a.favoriteCnt)
-    .slice(0, bestCount);
+  // 🔹 전체 데이터에서 좋아요 순 상위 게시글 가져오기
+  const bestArticles = useMemo(() => {
+    return [...(results || [])]
+      .sort((a, b) => b.favoriteCnt - a.favoriteCnt)
+      .slice(0, bestCount);
+  }, [results, bestCount]);
 
   // 🔹 서버에서 데이터 가져오기
   useEffect(() => {
@@ -99,10 +101,11 @@ export default function Community({
       <section className="w-full max-w-[1200px] px-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[20px] font-bold">게시글</h2>
-          <Link href="/articles/register">
-            <Button className="bg-[#3692FF] text-white h-[42px] w-[88px] px-1 font-semibold text-[16px] cursor-pointer">
-              글쓰기
-            </Button>
+          <Link
+            href="/community/article-create"
+            className="bg-[#3692FF] rounded-lg text-white h-[42px] w-[88px] px-1 font-semibold text-[16px] cursor-pointer flex items-center justify-center"
+          >
+            글쓰기
           </Link>
         </div>
 

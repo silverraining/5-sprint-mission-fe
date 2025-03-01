@@ -1,13 +1,20 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function ToggleDropdown({ onEdit, onDelete }) {
+export default function ToggleDropdown({ onEdit, onDelete, articleId }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleBtn = () => {
     setIsOpen(!isOpen);
   };
+  const router = useRouter();
 
+  const handleEdit = () => {
+    if (articleId) {
+      onEdit(articleId);
+    }
+  };
   return (
     <div className="relative">
       {/* Image used as the toggle button */}
@@ -25,7 +32,7 @@ export default function ToggleDropdown({ onEdit, onDelete }) {
           <ul className="m-0 p-0 h-full flex flex-col text-[#6B7280] text-[16px]">
             <li
               className="flex items-center justify-center h-1/2 p-2 hover:bg-gray-200 cursor-pointer"
-              onClick={onEdit}
+              onClick={handleEdit}
             >
               수정하기
             </li>

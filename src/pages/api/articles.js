@@ -8,13 +8,12 @@ export const fetchArticles = async (
   keyword = ""
 ) => {
   try {
-    const response = await fetch(
-      `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}&keyword=${encodeURIComponent(
+    const response = await instance.get(
+      `/articles?page=${page}&orderBy=${orderBy}&limit=${limit}&keyword=${encodeURIComponent(
         keyword
       )}`
     );
-    const data = await response.json();
-    return data;
+    return response.data; // Axios already parses the JSON response, so no need for response.json()
   } catch (error) {
     console.error("❌ API 요청 실패:", error);
     return { list: [], totalCount: 0 };
@@ -53,7 +52,11 @@ export const createArticle = async ({ title, content, username, image }) => {
 // 게시글 업데이트하기
 export const updateArticle = async (id, articleData) => {
   try {
-    const response = await instance.put(`/articles/${id}`, articleData);
+    // 요청 본문에 id와 articleData를 함께 보내는 방식
+    const response = await instance.patch(`/articles`, {
+      id: id, // id를 요청 본문에 포함
+      ...articleData, // title, content 등의 데이터를 전송
+    });
     return response.data;
   } catch (error) {
     console.error("Error updating article:", error);
