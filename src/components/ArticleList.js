@@ -21,15 +21,6 @@ export default function ArticleList({ results = [] }) {
 
   return (
     <div className="w-full max-w-[1200px] py-8 px-4">
-      <div className="flex justify-between">
-        <div className="text-[20px] font-bold mb-6">게시글</div>
-        <Link href="/articles/register">
-          <Button className="bg-[#3692FF] text-white h-[42px] w-[88px] px-1 font-semibold text-[16px] cursor-pointer">
-            글쓰기
-          </Button>
-        </Link>
-      </div>
-
       <div className="space-y-4">
         {articles.map((article) => (
           <Article key={article.id} article={article} />
