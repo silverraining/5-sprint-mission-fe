@@ -1,17 +1,16 @@
-import instance from "@/lib/api/axios";
+import instance from "@/pages/api/axios";
 
 // 게시글 목록 조회
-export const fetchArticles = async (order = "createdAt") => {
-  const query = `orderBy=${order}`;
-  console.log("✅ fetchArticles 함수 실행됨");
-
+export const fetchArticles = async (orderBy, page, limit = 10) => {
   try {
-    const response = await instance.get(`/articles?${query}`);
-    console.log("📌 fetchArticles response:", response.data);
-    return response.data;
+    const response = await fetch(
+      `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}`
+    );
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error("❌ Error fetching articles:", error);
-    throw error;
+    console.error("❌ API 요청 실패:", error);
+    return { list: [], totalCount: 0 };
   }
 };
 
