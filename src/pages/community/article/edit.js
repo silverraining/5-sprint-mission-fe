@@ -61,6 +61,8 @@ export default function ArticleEditPage() {
       alert("게시글 수정 중 오류가 발생했습니다.");
     }
   };
+  const isFormValid =
+    formData.title.trim() !== "" && formData.content.trim() !== "";
 
   if (loading) return <div>⏳ 로딩 중...</div>;
 
@@ -69,8 +71,11 @@ export default function ArticleEditPage() {
       <div className="flex justify-between">
         <h1 className="font-bold text-[20px]">게시글 수정</h1>
         <Button
-          className="bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]"
+          className={`h-[42px] w-[74px] px-1 font-semibold text-[16px] ${
+            isFormValid ? "bg-[#3692FF]" : "bg-[#9CA3AF]"
+          }`}
           onClick={handleClick}
+          disabled={!isFormValid}
         >
           수정
         </Button>

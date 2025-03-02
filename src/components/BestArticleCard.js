@@ -6,9 +6,8 @@ import { Button } from "./ui/button";
 const BestArticleCard = ({ articles }) => {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
-    console.log("BestArticleCard - articles:", articles);
+    console.log("BestArticleCard에 전달된 articles:", articles);
   }, [articles]);
-
   useEffect(() => {
     setIsClient(true);
   }, []);

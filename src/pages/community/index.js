@@ -17,6 +17,7 @@ export default function Community({
   results = [],
   orderBy: initialOrderBy,
   totalPages: initialTotalPages,
+  allArticles = [],
 }) {
   const [orderBy, setOrderBy] = useState(initialOrderBy || "createdAt");
   const [sortedResults, setSortedResults] = useState(results || []);
@@ -46,45 +47,42 @@ export default function Community({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 🔹 전체 데이터에서 좋아요 순 상위 게시글 가져오기
   const bestArticles = useMemo(() => {
-    return [...(results || [])]
+    return [...allArticles] // 전체 게시글 데이터 기준으로 정렬
       .sort((a, b) => b.favoriteCnt - a.favoriteCnt)
       .slice(0, bestCount);
-  }, [results, bestCount]);
+  }, [allArticles, bestCount]);
 
-  // 🔹 서버에서 데이터 가져오기
-  useEffect(() => {
-    const getArticles = async () => {
-      try {
-        const limit = 6;
-        const data = await fetchArticles(
-          orderBy,
-          currentPage,
-          limit,
-          searchKeyword
-        ); // ✅ keyword 추가
+  // useEffect(() => {
+  //   const getArticles = async () => {
+  //     try {
+  //       const limit = 10;
+  //       const data = await fetchArticles(
+  //         orderBy,
+  //         currentPage,
+  //         limit,
+  //         searchKeyword
+  //       );
 
-        setSortedResults(data.list || []);
-        setTotalPages(Math.ceil(data.totalCount / limit) || 1);
-      } catch (error) {
-        console.error("❌ 게시글 불러오기 실패:", error);
-      }
-    };
+  //       setSortedResults(data.list || []);
+  //       setTotalPages(Math.ceil(data.totalCount / limit) || 1);
+  //     } catch (error) {
+  //       console.error("❌ 게시글 불러오기 실패:", error);
+  //     }
+  //   };
 
-    getArticles();
-  }, [orderBy, currentPage, searchKeyword]); // ✅ searchKeyword 변경 시 API 다시 호출
+  //   getArticles();
+  // }, [orderBy, currentPage, searchKeyword]); // searchKeyword 변경 시 API 다시 호출
 
   // 🔹 검색 필터링 및 페이지네이션 적용
   const filteredResults = useMemo(() => {
-    if (!searchKeyword) return sortedResults; // ✅ 검색어 없으면 그대로 반환
+    if (!searchKeyword) return sortedResults; // 검색어 없으면 그대로 반환
 
     return sortedResults.filter((item) =>
       item.title?.toLowerCase().includes(searchKeyword.toLowerCase())
     );
-  }, [searchKeyword, sortedResults]); // ✅ `currentPage`는 필요 없음
+  }, [searchKeyword, sortedResults]);
 
-  // 🔹 페이지 변경 핸들러
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -140,17 +138,26 @@ export async function getServerSideProps(context) {
   const orderBy = query.orderBy || "createdAt";
 
   try {
-    const limit = 6; // ✅ 한 페이지당 6개
+    const limit = 10;
     const response = await fetch(
       `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}`
     );
+
+    console.log("📡 API 응답 상태:", response.status); // 응답 상태 확인
+    if (!response.ok) {
+      throw new Error("❌ API 요청 실패, 응답 상태가 좋지 않음");
+    }
+
     const data = await response.json();
+    console.log("📡 API 응답 데이터:", data); // 전체 응답 데이터 확인
+    console.log("📜 전체 게시글 데이터:", data.allArticles); // 전체 게시글 데이터 확인
 
     return {
       props: {
         results: data.list || [],
         orderBy,
-        totalPages: Math.ceil(data.totalCount / limit) || 1, // ✅ 총 페이지 수 다시 계산
+        totalPages: Math.ceil(data.totalCount / limit) || 1,
+        allArticles: data.allArticles || [],
       },
     };
   } catch (error) {
@@ -160,6 +167,7 @@ export async function getServerSideProps(context) {
         results: [],
         orderBy,
         totalPages: 1,
+        allArticles: [],
       },
     };
   }

@@ -80,7 +80,6 @@ export default function ArticleDetailPage() {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    console.log("🟢 댓글 등록 버튼 클릭됨"); // 로그 추가
 
     if (!commentText.trim()) {
       alert("댓글을 입력해주세요!");
@@ -88,9 +87,7 @@ export default function ArticleDetailPage() {
     }
 
     try {
-      console.log("🔵 댓글 등록 요청:", id, commentText);
       const newComment = await addComment(id, commentText);
-      alert("댓글이 성공적으로 등록되었습니다!");
       setCommentText(""); // 입력 필드 초기화
       setComments((prevComments) => [...prevComments, newComment]);
     } catch (error) {
@@ -98,6 +95,8 @@ export default function ArticleDetailPage() {
     }
   };
 
+  // 댓글 입력이 있을 경우 등록 버튼 활성화 여부 확인
+  const isCommentValid = commentText.trim() !== "";
   return (
     <>
       <section className="pb-2 max-w-[1200px] mx-auto px-4">
@@ -146,8 +145,11 @@ export default function ArticleDetailPage() {
           <div className="w-full flex justify-end">
             <Button
               type="button"
-              className="cursor-pointer bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]"
+              className={`cursor-pointer bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px] ${
+                isCommentValid ? "bg-[#3692FF]" : "bg-[#9CA3AF]"
+              }`}
               onClick={handleCommentSubmit}
+              disabled={!isCommentValid}
             >
               등록
             </Button>

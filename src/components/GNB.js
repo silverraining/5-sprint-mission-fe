@@ -10,7 +10,7 @@ export const NavSection = () => {
 
   return (
     <div className="flex items-center text-[#4B5563] gap-4 px-4">
-      <Link className="mr-4" href="/community">
+      <Link href="/community">
         <h4
           className={`text-[16px] whitespace-nowrap md:text-lg font-bold ${
             pathname === "/community" ? "text-blue-500" : ""
@@ -38,7 +38,7 @@ export default function GNB() {
   return (
     <header className="w-full h-[70px] flex justify-center sticky border-b border-solid border-gray3 border-[1px] px-4">
       <Container className="w-full max-w-full md:max-w-full xl:max-w-[1520px] my-0 mx-2 md:mx-4 xl:mx-[200px] flex items-center justify-between">
-        <div className="flex gap-2 md:gap-4 lg:gap-6">
+        <div className="flex ">
           <Link href="/">
             <Image
               src={logoSrc} // 변경된 로고 적용

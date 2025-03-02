@@ -4,17 +4,15 @@ import Image from "next/image";
 
 export default function CommentList({ comments = [], articleId }) {
   const [commentList, setCommentList] = useState(comments);
-  useEffect(() => {
-    // articleId가 제대로 전달되었는지 확인
-    console.log("Article ID:", articleId);
-  }, [articleId]);
-  useEffect(() => {
-    const updatedComments = comments.map((comment) => ({
-      ...comment,
-      username: "뚱이 판다",
-    }));
 
-    setCommentList(updatedComments); // 갱신된 댓글 리스트 상태 업데이트
+  useEffect(() => {
+    if (comments.length > 0) {
+      const updatedComments = comments.map((comment) => ({
+        ...comment,
+        username: "뚱이 판다",
+      }));
+      setCommentList(updatedComments);
+    }
   }, [comments]);
 
   const handleDelete = (deletedCommentId) => {
