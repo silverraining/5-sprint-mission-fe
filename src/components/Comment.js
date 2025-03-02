@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import ToggleDropdown from "./ToggleDropdown";
 import { useRouter } from "next/router";
-import { updateComment } from "@/pages/api/comment"; // 댓글 수정 API
+import { updateComment, deleteComment } from "@/pages/api/comment";
 const defaultProfile = "/ic_profile.png";
 
 export default function Comment({ comment, onDelete, articleId, onUpdate }) {
@@ -17,7 +17,6 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
 
   const handleSave = async () => {
     try {
-      console.log("Saving comment:", articleId, comment.id, editedContent);
       const updatedComment = await updateComment(
         "ARTICLE", // 또는 'PRODUCT'로 변경
         articleId,
@@ -56,7 +55,7 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
           <textarea
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full bg-[#F3F4F6] p-2  rounded-lg"
           />
         ) : (
           <p className="mt-2 text-gray-800">{comment.content}</p>
@@ -72,16 +71,16 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
       {isEditing && (
         <div className="flex justify-end gap-4">
           <button
-            onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            수정 완료
-          </button>
-          <button
             onClick={handleCancel}
-            className="bg-gray-300 text-black px-4 py-2 rounded"
+            className=" text-[#737373] text-[16px] font-semibold px-4 py-2 rounded-lg"
           >
             취소
+          </button>
+          <button
+            onClick={handleSave}
+            className="bg-[#3692FF] text-white text-[16px] font-semibold px-4 py-2 rounded-lg"
+          >
+            수정 완료
           </button>
         </div>
       )}

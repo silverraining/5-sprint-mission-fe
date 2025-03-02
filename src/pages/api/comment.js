@@ -23,6 +23,7 @@ export const updateComment = async (
       `/${resourceType.toLowerCase()}s/${resourceId}/comments/${commentId}`, // 리소스 타입에 맞는 경로
       { content }
     );
+    console.log("API 요청 URL:", response.config.url); // 요청 URL 확인용
     return response.data;
   } catch (err) {
     console.error("댓글 수정 실패:", err);
@@ -45,4 +46,3 @@ export const deleteComment = async (articleId, commentId) => {
     throw error;
   }
 };
-export { addComment, updateComment, deleteComment };

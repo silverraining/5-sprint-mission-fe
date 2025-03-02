@@ -24,7 +24,7 @@ export default function ArticleDetailPage() {
 
   useEffect(() => {
     if (!id) return; // id가 없으면 실행 안 함
-
+    console.log("id찍어보자: ", id);
     async function fetchData() {
       try {
         const [articleRes, commentsRes] = await Promise.all([
@@ -155,7 +155,7 @@ export default function ArticleDetailPage() {
         </Form>
       </div>
       <div className="max-w-[1200px] mx-auto px-4">
-        <CommentList comments={comments} />
+        <CommentList comments={comments} articleId={id} />
       </div>
       <Link href="/community" className="block text-center mt-6">
         <img

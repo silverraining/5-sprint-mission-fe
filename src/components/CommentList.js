@@ -4,7 +4,10 @@ import Image from "next/image";
 
 export default function CommentList({ comments = [], articleId }) {
   const [commentList, setCommentList] = useState(comments);
-
+  useEffect(() => {
+    // articleId가 제대로 전달되었는지 확인
+    console.log("Article ID:", articleId);
+  }, [articleId]);
   useEffect(() => {
     const updatedComments = comments.map((comment) => ({
       ...comment,
