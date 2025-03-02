@@ -146,7 +146,7 @@ export default function ArticleDetailPage() {
           <div className="w-full flex justify-end">
             <Button
               type="button"
-              className="bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]"
+              className="cursor-pointer bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]"
               onClick={handleCommentSubmit}
             >
               등록
@@ -157,7 +157,7 @@ export default function ArticleDetailPage() {
       <div className="max-w-[1200px] mx-auto px-4">
         <CommentList comments={comments} articleId={id} />
       </div>
-      <Link href="/community" className="block text-center mt-6">
+      <Link href="/community" className="block text-center mt-12">
         <img
           src="/btn_back.svg"
           alt="목록으로 돌아가기"
