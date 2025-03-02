@@ -90,27 +90,29 @@ export default function Community({
   };
 
   return (
-    <div className="flex flex-col items-center w-full gap-8">
+    <div className="flex flex-col items-center w-full gap-8 min-w-[343px]">
       {/* ✅ 베스트 게시글 섹션 */}
-      <section className="w-full max-w-[1200px] px-4">
-        <h2 className="text-[20px] font-bold mb-4">베스트 게시글</h2>
+      <section className="w-full max-w-[1200px] min-w-[343px] md:px-4">
+        <h2 className="text-[20px] font-bold mb-4  whitespace-nowrap">
+          베스트 게시글
+        </h2>
         <BestArticleCard articles={bestArticles} />
       </section>
 
       {/* ✅ 일반 게시글 섹션 */}
-      <section className="w-full max-w-[1200px] px-4">
+      <section className="w-full max-w-[1200px] min-w-[343px] md:px-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-[20px] font-bold">게시글</h2>
+          <h2 className="text-[20px] font-bold whitespace-nowrap">게시글</h2>
           <Link
             href="/community/article/create"
-            className="bg-[#3692FF] rounded-lg text-white h-[42px] w-[88px] px-1 font-semibold text-[16px] cursor-pointer flex items-center justify-center"
+            className="whitespace-nowrap bg-[#3692FF] rounded-lg text-white h-[42px] w-[88px] px-1 font-semibold text-[16px] cursor-pointer flex items-center justify-center"
           >
             글쓰기
           </Link>
         </div>
 
         {/* 검색바 & 정렬 버튼 */}
-        <div className="w-full flex justify-between items-center mb-4">
+        <div className="w-full flex justify-between items-center mb-4 gap-2 min-w-[343px]">
           <SearchBar value={searchKeyword} onChange={setSearchKeyword} />
 
           <Select selected={orderBy} onChange={setOrderBy} options={options} />

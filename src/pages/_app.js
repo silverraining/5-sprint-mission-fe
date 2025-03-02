@@ -13,7 +13,10 @@ export default function App({ Component, pageProps }) {
         {/* <style>{fontStyle}</style> */}
       </Head>
       <GNB />
-      <Container page className="min-h-screen">
+      <Container
+        page
+        className="min-h-screen w-full max-w-full xl:max-w-[1520px] px-4"
+      >
         <Component {...pageProps} />
       </Container>
       <Footer />

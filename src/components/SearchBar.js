@@ -2,7 +2,7 @@ const SearchBar = ({ value, onChange }) => {
   return (
     <form
       onSubmit={(e) => e.preventDefault()} // 새로고침 방지
-      className="flex items-center w-full max-w-[400px] bg-[#F3F4F6] rounded-[10px] p-2"
+      className="flex items-center w-full bg-[#F3F4F6] rounded-[10px] p-2  min-w-[288px] max-w-[1054px] flex-grow"
     >
       <input
         type="text"

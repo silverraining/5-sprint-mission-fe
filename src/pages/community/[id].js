@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import CommentList from "@/components/CommentList";
 import { Textarea } from "@/components/ui/textarea";
 import { deleteArticle } from "@/pages/api/articles";
+import Link from "next/link";
 
 export default function ArticleDetailPage() {
   const router = useRouter();
@@ -76,14 +77,10 @@ export default function ArticleDetailPage() {
   };
   return (
     <>
-      <section className="pb-2">
+      <section className="pb-2 max-w-[1200px] mx-auto px-4">
         <div className="flex justify-between pb-2">
           <h2 className="font-bold text-xl">{article.title}</h2>
-          <ToggleDropdown
-            onEdit={handleEdit} // 수정 함수 전달
-            id={id} // ID 전달
-            onDelete={handleDelete}
-          />
+          <ToggleDropdown onEdit={handleEdit} id={id} onDelete={handleDelete} />
         </div>
         <div className="flex items-center gap-4">
           <Image
@@ -103,34 +100,41 @@ export default function ArticleDetailPage() {
           <HeartTag favoriteCnt={article.favoriteCnt} />
         </div>
       </section>
-      <div className="border-t border-gray-300 my-2 mb-4"></div>
-      <div className="mb-6">
+      <div className="border-t border-gray-300 my-2 mb-4 max-w-[1200px] mx-auto"></div>
+      <div className="mb-6 max-w-[1200px] mx-auto px-4">
         <p>{article.content}</p>
       </div>
-      <div>
-        <Form className="space-y-4 gap-4">
+      <div className="max-w-[1200px] w-full mx-auto px-4">
+        <Form className="space-y-4">
           <div className="flex flex-col gap-2 mb-4">
-            <div className="flex justify-start items-center">
-              <Label htmlFor="title" className="font-bold text-lg">
-                댓글달기
-              </Label>
-            </div>
+            <Label htmlFor="comment" className="font-bold text-lg">
+              댓글달기
+            </Label>
             <Textarea
               id="comment"
-              className="bg-[#F3F4F6] font-medium text-[16px] max-w-[1200px] min-w-[343px] h-[104px] px-6 pt-3"
+              className="bg-[#F3F4F6] font-medium text-[16px] w-full h-[104px] px-6 pt-3"
               placeholder="댓글을 입력해주세요."
             />
           </div>
+          <div className="w-full flex justify-end">
+            <Button className="bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]">
+              등록
+            </Button>
+          </div>
         </Form>
-        <div className="flex justify-end py-1">
-          <Button className="bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]">
-            등록
-          </Button>
-        </div>
       </div>
-      <div>
+      <div className="max-w-[1200px] mx-auto px-4">
         <CommentList comments={comments} />
       </div>
+      <Link href="/community" className="block text-center mt-6">
+        <img
+          src="/btn_back.svg"
+          alt="목록으로 돌아가기"
+          width={240}
+          height={48}
+          className="mx-auto"
+        />
+      </Link>
     </>
   );
 }

@@ -61,13 +61,13 @@ const Footer = () => {
   const isMobile = useMediaQuery("(max-width: 640px)");
 
   return (
-    <footer className="bg-gray-900 pb-6 min-h-[160px] w-full flex items-start pt-6">
+    <footer className=" w-full bg-[#111827] h-40 px-4 md:px-6 py-8">
       <div
-        className={`w-full px-6 mx-auto ${
+        className={
           isMobile
-            ? "grid grid-cols-2 gap-4 items-center text-center"
-            : "flex justify-between items-center"
-        }`}
+            ? "grid grid-cols-2 gap-4 mx-auto text-center max-w-7xl gap-y-6"
+            : "flex justify-between items-center mx-auto max-w-7xl gap-y-6"
+        }
       >
         {isMobile ? (
           <>
@@ -87,5 +87,4 @@ const Footer = () => {
     </footer>
   );
 };
-
 export default Footer;

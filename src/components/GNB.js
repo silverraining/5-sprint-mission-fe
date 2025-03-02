@@ -51,7 +51,7 @@ export default function GNB() {
           </Link>
           <NavSection />
         </div>
-        <Button className="bg-[#3692FF] h-[42px] w-[88px] min-w-[88px] min-h-[42px] px-1 font-semibold text-[16px]">
+        <Button className="bg-[#3692FF] h-[42px] w-[88px] min-w-[88px] min-h-[42px] pr-4 font-semibold text-[16px]">
           로그인
         </Button>
       </Container>
