@@ -102,7 +102,7 @@ export default function Community({
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[20px] font-bold">게시글</h2>
           <Link
-            href="/community/article-create"
+            href="/community/article/create"
             className="bg-[#3692FF] rounded-lg text-white h-[42px] w-[88px] px-1 font-semibold text-[16px] cursor-pointer flex items-center justify-center"
           >
             글쓰기

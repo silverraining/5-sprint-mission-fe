@@ -19,12 +19,18 @@ const Select = ({ value = "createdAt", onChange, options }) => {
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={clsx(
-          "cursor-pointer w-[160px] h-[42px] text-16pt font-regular text-f-gray-500 rounded-[15px] border border-f-gray-200 px-[20px] text-left flex items-center justify-between",
+          "cursor-pointer w-[130px] h-[42px] text-16pt font-regular text-f-gray-500 rounded-[15px] border border-f-gray-200 px-[20px] text-left flex items-center justify-between",
           { "focus:ring-f-green-text focus:ring-[2px]": isOpen }
         )}
       >
         {selectedLabel}
-        <Image src="/ic_toggle.png" alt="toggle" width={30} height={30} />
+        <Image
+          src="/ic_arrow_down.svg"
+          alt="toggle"
+          width={25}
+          height={25}
+          className="opacity-100"
+        />
       </button>
       {isOpen && (
         <div className="absolute bg-white w-[160px] rounded-[15px] border border-f-gray-200 z-10 flex flex-col mt-[4px] shadow-md">

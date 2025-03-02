@@ -58,7 +58,7 @@ export default function ArticleDetailPage() {
   // 수정 페이지로 이동하는 함수
   const handleEdit = (articleId) => {
     if (articleId) {
-      router.push(`/community/article-edit?id=${articleId}`);
+      router.push(`/community/article/edit?id=${articleId}`);
     }
   };
   // 삭제 처리 함수
@@ -81,7 +81,7 @@ export default function ArticleDetailPage() {
           <h2 className="font-bold text-xl">{article.title}</h2>
           <ToggleDropdown
             onEdit={handleEdit} // 수정 함수 전달
-            articleId={id} // ID 전달
+            id={id} // ID 전달
             onDelete={handleDelete}
           />
         </div>

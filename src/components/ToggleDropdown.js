@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { deleteArticle } from "@/pages/api/articles";
 
-export default function ToggleDropdown({ onEdit, onDelete, articleId }) {
+export default function ToggleDropdown({ onEdit, onDelete, id }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleBtn = () => {
@@ -12,14 +11,14 @@ export default function ToggleDropdown({ onEdit, onDelete, articleId }) {
   const router = useRouter();
 
   const handleEdit = () => {
-    if (articleId) {
-      onEdit(articleId);
+    if (id) {
+      onEdit(id);
     }
   };
 
   const handleDelete = () => {
-    if (articleId) {
-      onDelete(articleId); // 부모 컴포넌트로 삭제 요청 전달
+    if (id) {
+      onDelete(id);
     }
   };
 
