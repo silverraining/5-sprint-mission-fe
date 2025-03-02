@@ -39,9 +39,8 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
   // 댓글 삭제
   const handleDelete = async () => {
     try {
-      await deleteComment(articleId, comment.id);
-      onDelete(comment.id); // 부모 컴포넌트에서 상태 업데이트 처리
-      router.replace(router.asPath); // 현재 페이지를 새로고침하여 상태 업데이트
+      await deleteComment("ARTICLE", articleId, comment.id);
+      onDelete(comment.id); // 부모 컴포넌트에서 댓글 리스트 상태를 갱신
     } catch (err) {
       console.error("댓글 삭제 실패:", err);
     }

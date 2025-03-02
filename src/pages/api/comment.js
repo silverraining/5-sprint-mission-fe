@@ -31,18 +31,22 @@ export const updateComment = async (
   }
 };
 
-export const deleteComment = async (articleId, commentId) => {
+// 프론트엔드 deleteComment 함수
+export const deleteComment = async (resourceType, resourceId, commentId) => {
   try {
+    // 로그 확인을 위해 articleId를 로그에 추가
     console.log(
-      `Deleting comment with ID: ${commentId} from article ${articleId}`
-    ); // API 호출 전에 로그 출력
-    const response = await instance.delete(
-      `/articles/${articleId}/comments/${commentId}`
+      `Deleting comment with ID: ${commentId} from ${resourceType} with ID: ${resourceId}`
     );
-    console.log("Comment deleted successfully", response);
-    return response;
+
+    // resourceType, resourceId, commentId를 경로에 포함
+    const response = await instance.delete(
+      `/${resourceType.toLowerCase()}s/${resourceId}/comments/${commentId}`
+    );
+    console.log("Comment deleted successfully", response.data); // 성공 시 로그 출력
+    return response.data;
   } catch (error) {
-    console.error("Error deleting comment", error);
+    console.error("Error deleting comment", error.response || error);
     throw error;
   }
 };

@@ -1,14 +1,13 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useState } from "react";
+
+import { useState, useEffect, useRef } from "react";
 
 export default function ToggleDropdown({ onEdit, onDelete, id }) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const dropdownRef = useRef(null);
   const toggleBtn = () => {
     setIsOpen(!isOpen);
   };
-  const router = useRouter();
 
   const handleEdit = () => {
     if (id) {
@@ -21,17 +20,27 @@ export default function ToggleDropdown({ onEdit, onDelete, id }) {
       onDelete(id);
     }
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {/* Image used as the toggle button */}
       <Image
         src="/ic_kebab.svg"
         width={24}
         height={24}
         alt="toggleDropdown"
-        onClick={toggleBtn} // Use the image click to toggle the dropdown
-        className="cursor-pointer" // Add a pointer cursor to indicate it's clickable
+        onClick={toggleBtn}
+        className="cursor-pointer"
       />
       {/* Dropdown Menu */}
       {isOpen && (
