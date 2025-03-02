@@ -26,6 +26,31 @@ export default function Community({
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(initialTotalPages);
   const [bestArticles, setBestArticles] = useState([]);
+  // Best Articles Fetch
+  useEffect(() => {
+    const fetchBestArticles = async () => {
+      try {
+        const response = await fetch(
+          "https://sprint-mission08-be.onrender.com/articles?orderBy=favorite"
+        );
+        if (!response.ok) {
+          throw new Error("❌ 베스트 게시물 로드 실패");
+        }
+        const data = await response.json();
+        if (Array.isArray(data.list)) {
+          const sortedData = data.list.sort(
+            (a, b) => b.favoriteCnt - a.favoriteCnt
+          );
+          setBestArticles(sortedData.slice(0, bestCount)); // Set top articles
+        } else {
+          console.error("❌ 'list' 속성이 배열이 아닙니다", data);
+        }
+      } catch (error) {
+        console.error("❌ 베스트 게시물 API 호출 실패:", error);
+      }
+    };
+    fetchBestArticles();
+  }, [bestCount]);
   useEffect(() => {
     console.log("✅ 현재 totalPages:", totalPages);
   }, [totalPages]);
@@ -53,34 +78,26 @@ export default function Community({
   //     .slice(0, bestCount);
   // }, [allArticles, bestCount]);
 
-  // Fetch Best Articles from API
   useEffect(() => {
-    const fetchBestArticles = async () => {
+    const getArticles = async () => {
       try {
-        const response = await fetch(
-          "https://sprint-mission08-be.onrender.com/articles?orderBy=favorite"
+        const limit = 10;
+        const data = await fetchArticles(
+          orderBy,
+          currentPage,
+          limit,
+          searchKeyword
         );
-        if (!response.ok) {
-          throw new Error("❌ 베스트 게시물 로드 실패");
-        }
-        const data = await response.json();
 
-        // Access 'list' property and ensure it's an array before sorting
-        if (Array.isArray(data.list)) {
-          const sortedData = data.list.sort(
-            (a, b) => b.favoriteCnt - a.favoriteCnt
-          );
-          setBestArticles(sortedData.slice(0, bestCount)); // Set top articles
-        } else {
-          console.error("❌ 'list' 속성이 배열이 아닙니다", data);
-        }
+        setSortedResults(data.list || []);
+        setTotalPages(Math.ceil(data.totalCount / limit) || 1);
       } catch (error) {
-        console.error("❌ 베스트 게시물 API 호출 실패:", error);
+        console.error("❌ 게시글 불러오기 실패:", error);
       }
     };
 
-    fetchBestArticles();
-  }, [bestCount]); // Re-run if bestCount changes
+    getArticles();
+  }, [orderBy, currentPage, searchKeyword]); // searchKeyword 변경 시 API 다시 호출
 
   // 🔹 검색 필터링 및 페이지네이션 적용
   const filteredResults = useMemo(() => {
@@ -90,7 +107,6 @@ export default function Community({
       item.title?.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   }, [searchKeyword, sortedResults]);
-
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -144,25 +160,27 @@ export async function getServerSideProps(context) {
   const { query } = context;
   const page = query.page || 1;
   const orderBy = query.orderBy || "createdAt";
-
+  const searchKeyword = query.search || ""; // 쿼리에서 검색어 받기
   try {
     const limit = 10;
     const response = await fetch(
       `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}`
     );
 
+    console.log("📡 API 응답 상태:", response.status); // 응답 상태 확인
     if (!response.ok) {
       throw new Error("❌ API 요청 실패, 응답 상태가 좋지 않음");
     }
 
     const data = await response.json();
+    console.log("📡 API 응답 데이터:", data); // 전체 응답 데이터 확인
+    console.log("📜 전체 게시글 데이터:", data.list); // 전체 게시글 데이터 확인
 
     return {
       props: {
-        results: data.list || [], // 페이지네이션된 게시글
+        results: data.list || [],
         orderBy,
         totalPages: Math.ceil(data.totalCount / limit) || 1,
-        allArticles: data.list || [], // 전체 게시글
       },
     };
   } catch (error) {
@@ -172,7 +190,7 @@ export async function getServerSideProps(context) {
         results: [],
         orderBy,
         totalPages: 1,
-        allArticles: [], // 빈 데이터 반환
+        allArticles: [],
       },
     };
   }
