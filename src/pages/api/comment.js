@@ -1,15 +1,18 @@
 import instance from "@/pages/api/axios";
 
-const addComment = async (resourceType, resourceId, content) => {
+export const addComment = async (articleId, content) => {
   try {
-    const response = await instance.post("/comments", {
-      resourceType,
-      resourceId,
+    console.log("🔵 댓글 등록 요청:", { articleId, content }); // 요청 데이터 확인
+    const response = await instance.post(`/articles/${articleId}/comments`, {
       content,
     });
+    console.log("🟢 댓글 등록 성공:", response.data); // 응답 데이터 확인
     return response.data;
   } catch (err) {
-    console.error("Error adding comment: ", err);
+    console.error(
+      "🔴 댓글 등록 실패:",
+      err.response ? err.response.data : err.message
+    );
     throw err;
   }
 };

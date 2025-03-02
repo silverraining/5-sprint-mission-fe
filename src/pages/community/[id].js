@@ -11,6 +11,7 @@ import CommentList from "@/components/CommentList";
 import { Textarea } from "@/components/ui/textarea";
 import { deleteArticle } from "@/pages/api/articles";
 import Link from "next/link";
+import { addComment } from "../api/comment";
 
 export default function ArticleDetailPage() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function ArticleDetailPage() {
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [commentText, setCommentText] = useState("");
 
   useEffect(() => {
     if (!id) return; // id가 없으면 실행 안 함
@@ -75,6 +77,27 @@ export default function ArticleDetailPage() {
       }
     }
   };
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    console.log("🟢 댓글 등록 버튼 클릭됨"); // 로그 추가
+
+    if (!commentText.trim()) {
+      alert("댓글을 입력해주세요!");
+      return;
+    }
+
+    try {
+      console.log("🔵 댓글 등록 요청:", id, commentText);
+      const newComment = await addComment(id, commentText);
+      alert("댓글이 성공적으로 등록되었습니다!");
+      setCommentText(""); // 입력 필드 초기화
+      setComments((prevComments) => [...prevComments, newComment]);
+    } catch (error) {
+      alert("댓글 등록 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <>
       <section className="pb-2 max-w-[1200px] mx-auto px-4">
@@ -105,7 +128,7 @@ export default function ArticleDetailPage() {
         <p>{article.content}</p>
       </div>
       <div className="max-w-[1200px] w-full mx-auto px-4">
-        <Form className="space-y-4">
+        <Form className="space-y-4" onSubmit={handleCommentSubmit}>
           <div className="flex flex-col gap-2 mb-4">
             <Label htmlFor="comment" className="font-bold text-lg">
               댓글달기
@@ -114,10 +137,18 @@ export default function ArticleDetailPage() {
               id="comment"
               className="bg-[#F3F4F6] font-medium text-[16px] w-full h-[104px] px-6 pt-3"
               placeholder="댓글을 입력해주세요."
+              value={commentText}
+              onChange={(e) => {
+                setCommentText(e.target.value);
+              }}
             />
           </div>
           <div className="w-full flex justify-end">
-            <Button className="bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]">
+            <Button
+              type="button"
+              className="bg-[#9CA3AF] h-[42px] w-[74px] px-1 font-semibold text-[16px]"
+              onClick={handleCommentSubmit}
+            >
               등록
             </Button>
           </div>
