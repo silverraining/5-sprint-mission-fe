@@ -33,14 +33,17 @@ const Select = ({ value = "createdAt", onChange, options }) => {
           className="opacity-100"
         />
       </button>
+      {/* 드롭다운 옵션 목록 */}
       {isOpen && (
         <div className="absolute bg-white w-[130px] rounded-[15px] border border-f-gray-200 z-10 flex flex-col mt-[4px] shadow-md right-0 md:right-auto">
           {options.map((item, index) => (
             <button
               key={item.value}
-              className={`h-[42px] px-4 text-16pt font-regular text-f-black text-center ${
-                index !== 0 && "border-t border-f-gray-200"
-              }`}
+              className={clsx(
+                "h-[42px] px-4 text-16pt font-regular text-f-black text-center cursor-pointer transition-all duration-200 ease-in-out",
+                index !== 0 && "border-t border-f-gray-200",
+                "hover:bg-gray-100"
+              )}
               onClick={() => handleClickOption(item)}
             >
               {item.label}

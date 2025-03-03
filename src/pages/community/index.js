@@ -5,7 +5,6 @@ import SearchBar from "@/components/SearchBar";
 import BestArticleCard from "@/components/BestArticleCard";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { fetchArticles } from "@/pages/api/articles";
 
 const options = [
@@ -134,7 +133,7 @@ export default function Community({
         <div className="w-full flex justify-between items-center mb-4 gap-2 min-w-[343px]">
           <SearchBar value={searchKeyword} onChange={setSearchKeyword} />
 
-          <Select selected={orderBy} onChange={setOrderBy} options={options} />
+          <Select value={orderBy} onChange={setOrderBy} options={options} />
         </div>
 
         {/* 필터링된 게시글 목록 */}
