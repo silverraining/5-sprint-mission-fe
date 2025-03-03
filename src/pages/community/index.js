@@ -41,7 +41,7 @@ export default function Community({
           const sortedData = data.list.sort(
             (a, b) => b.favoriteCnt - a.favoriteCnt
           );
-          setBestArticles(sortedData.slice(0, bestCount)); // Set top articles
+          setBestArticles(sortedData.slice(0, bestCount)); // 변경된 bestCount 적용
         } else {
           console.error("❌ 'list' 속성이 배열이 아닙니다", data);
         }
@@ -51,9 +51,6 @@ export default function Community({
     };
     fetchBestArticles();
   }, [bestCount]);
-  useEffect(() => {
-    console.log("✅ 현재 totalPages:", totalPages);
-  }, [totalPages]);
 
   // 🔹 반응형 BestArticle 개수 조절
   useEffect(() => {

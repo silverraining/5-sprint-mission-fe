@@ -12,18 +12,21 @@ export default function ToggleDropdown({ onEdit, onDelete, id }) {
   const handleEdit = () => {
     if (id) {
       onEdit(id);
+      setIsOpen(false);
     }
   };
 
   const handleDelete = () => {
     if (id) {
       onDelete(id);
+      setIsOpen(false);
     }
   };
+  // Close the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setIsOpen(false); // Close the dropdown if clicked outside
       }
     };
 

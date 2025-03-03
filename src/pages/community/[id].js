@@ -159,13 +159,16 @@ export default function ArticleDetailPage() {
       <div className="max-w-[1200px] mx-auto px-4">
         <CommentList comments={comments} articleId={id} />
       </div>
-      <Link href="/community" className="block text-center mt-12">
+      <Link
+        href="/community"
+        className="block text-center mt-12 w-[240px] mx-auto"
+      >
         <img
           src="/btn_back.svg"
           alt="목록으로 돌아가기"
           width={240}
           height={48}
-          className="mx-auto"
+          className=" cursor-pointer"
         />
       </Link>
     </>
