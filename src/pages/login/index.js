@@ -70,7 +70,7 @@ export default function LoginPage() {
         </div>
         <button
           type="submit"
-          className="w-full bg-[#9CA3AF] mb-6 text-white rounded-full min-w-[343px] min-h-[56px] font-bold hover:bg-[#3692FF]"
+          className="w-full bg-[#9CA3AF] mb-6 cursor-p text-white rounded-full min-w-[343px] min-h-[56px] font-bold hover:bg-[#3692FF]"
         >
           로그인
         </button>
