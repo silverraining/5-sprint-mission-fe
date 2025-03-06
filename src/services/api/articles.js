@@ -1,4 +1,4 @@
-import instance from "@/pages/api/axios";
+import instance from "@/services/api/axios";
 
 // 게시글 목록 조회 (검색 기능 추가)
 export const fetchArticles = async (

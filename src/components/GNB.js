@@ -19,7 +19,7 @@ export const NavSection = () => {
           자유게시판
         </h4>
       </Link>
-      <Link href="/community">
+      <Link href="/marketplace">
         <h4
           className={`text-[16px] whitespace-nowrap md:text-lg font-bold ${
             pathname === "/marketplace" ? "text-[#3692FF]" : ""

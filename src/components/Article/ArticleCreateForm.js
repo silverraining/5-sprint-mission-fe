@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Form } from "./ui/form";
+import { Form } from "@/components/ui/form";
 
 const ArticleCreateForm = ({ formData, onChange }) => {
   return (

@@ -7,11 +7,11 @@ import HeartTag from "@/components/HeartTag";
 import { Label } from "@/components/ui/label";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import CommentList from "@/components/CommentList";
+import CommentList from "@/components/Comment/CommentList";
 import { Textarea } from "@/components/ui/textarea";
-import { deleteArticle } from "@/pages/api/articles";
+import { deleteArticle } from "@/services/api/articles";
 import Link from "next/link";
-import { addComment } from "../api/comment";
+import { addComment } from "../../services/api/comment";
 
 export default function ArticleDetailPage() {
   const router = useRouter();

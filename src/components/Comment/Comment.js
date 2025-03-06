@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Image from "next/image";
-import ToggleDropdown from "./ToggleDropdown";
+import ToggleDropdown from "../ToggleDropdown";
 import { useRouter } from "next/router";
-import { updateComment, deleteComment } from "@/pages/api/comment";
+import { updateComment, deleteComment } from "@/services/api/comment";
 const defaultProfile = "/ic_profile.png";
 
 export default function Comment({ comment, onDelete, articleId, onUpdate }) {

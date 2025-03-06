@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Comment from "./Comment";
+import Comment from "@/components/Comment/Comment";
 import Image from "next/image";
 
 export default function CommentList({ comments = [], articleId }) {

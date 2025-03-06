@@ -1,4 +1,4 @@
-import instance from "@/pages/api/axios";
+import instance from "@/services/api/axios";
 
 export const addComment = async (articleId, content) => {
   try {

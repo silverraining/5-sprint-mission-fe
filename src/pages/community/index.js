@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import ArticleList from "@/components/ArticleList";
+import ArticleList from "@/components/Article/ArticleList";
 import Select from "@/components/Select";
 import SearchBar from "@/components/SearchBar";
-import BestArticleCard from "@/components/BestArticleCard";
+import BestArticleCard from "@/components/Article/BestArticleCard";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
-import { fetchArticles } from "@/pages/api/articles";
+import { fetchArticles } from "@/services/api/articles";
 
 const options = [
   { label: "최신순", value: "createdAt" },

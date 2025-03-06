@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import ArticleCreateForm from "@/components/ArticleCreateForm";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { fetchArticleById, updateArticle } from "@/pages/api/articles";
+import { fetchArticleById, updateArticle } from "@/services/api/articles";
 
 export default function ArticleEditPage() {
   const router = useRouter();
