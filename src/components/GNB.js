@@ -51,9 +51,12 @@ export default function GNB() {
           </Link>
           <NavSection />
         </div>
-        <Button className="bg-[#3692FF] h-[42px] w-[88px] min-w-[88px] min-h-[42px] pr-4 font-semibold text-[16px]">
+        <Link
+          href="/login"
+          className="whitespace-nowrap bg-[#3692FF] rounded-lg text-white h-[42px] w-[88px] px-1 font-semibold text-[16px] cursor-pointer flex items-center justify-center"
+        >
           로그인
-        </Button>
+        </Link>
       </Container>
     </header>
   );
