@@ -12,7 +12,9 @@ export default function CommentSection({ articleId, comments }) {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    console.log("버튼 클릭됨");
+    console.log("Form submitted");
+    console.log("Content:", content);
+
     if (!content.trim()) {
       alert("댓글을 입력해주세요!");
       return;
@@ -31,7 +33,7 @@ export default function CommentSection({ articleId, comments }) {
 
   return (
     <div className="max-w-[1200px] w-full mx-auto px-4">
-      <Form className="space-y-4" onSubmit={handleCommentSubmit}>
+      <form className="space-y-4" onSubmit={handleCommentSubmit}>
         <div className="flex flex-col gap-2 mb-4">
           <Label htmlFor="comment" className="font-bold text-lg">
             댓글달기
@@ -41,7 +43,10 @@ export default function CommentSection({ articleId, comments }) {
             className="bg-[#F3F4F6] font-medium text-[16px] w-full h-[104px] px-6 pt-3"
             placeholder="댓글을 입력해주세요."
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => {
+              console.log(e.target.value); // log to check if content is updating
+              setContent(e.target.value);
+            }}
           />
         </div>
         <div className="w-full flex justify-end">
@@ -55,7 +60,7 @@ export default function CommentSection({ articleId, comments }) {
             등록
           </Button>
         </div>
-      </Form>
+      </form>
       <CommentList comments={commentList} articleId={articleId} />
     </div>
   );
