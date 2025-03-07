@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import ArticleCreateForm from "@/components/ArticleCreateForm";
+import ArticleCreateForm from "@/components/Article/ArticleCreateForm";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { fetchArticleById, updateArticle } from "@/services/api/articles";
