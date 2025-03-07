@@ -12,25 +12,26 @@ export default function Article({ article }) {
       <div className="flex justify-between mb-2">
         <Link href={`/community/${article.id}`}>
           <div className="text-lg font-semibold mt-1">{article.title}</div>
+
+          {article.image ? (
+            <div className="flex justify-center items-center w-[72px] h-[72px] border rounded-[8px] bg-white">
+              <Image
+                src={article.image}
+                className="w-[48px] h-[48px] object-cover"
+                alt="Article Thumbnail"
+              />
+            </div>
+          ) : (
+            <div className="flex justify-center items-center w-[72px] h-[72px] border border-gray-300 rounded-[8px] bg-white">
+              <Image
+                src={defaultImg}
+                width={48}
+                height={48}
+                alt="Default Thumbnail"
+              />
+            </div>
+          )}
         </Link>
-        {article.image ? (
-          <div className="flex justify-center items-center w-[72px] h-[72px] border rounded-[8px] bg-white">
-            <Image
-              src={article.image}
-              className="w-[48px] h-[48px] object-cover"
-              alt="Article Thumbnail"
-            />
-          </div>
-        ) : (
-          <div className="flex justify-center items-center w-[72px] h-[72px] border border-gray-300 rounded-[8px] bg-white">
-            <Image
-              src={defaultImg}
-              width={48}
-              height={48}
-              alt="Default Thumbnail"
-            />
-          </div>
-        )}
       </div>
 
       <div className="flex justify-between mb-3">

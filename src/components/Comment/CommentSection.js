@@ -5,8 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Form } from "@/components/ui/form";
 import CommentList from "@/components/Comment/CommentList";
 import { addComment } from "@/services/api/comment";
-
-export default function CommentSection({ articleId, comments }) {
+import { useType } from "@/contexts/TypeContext";
+export default function CommentSection({
+  articleId,
+  comments,
+  label = "댓글달기", // Default value for label
+  placeholder = "댓글을 입력해주세요.", // Default value for placeholder
+}) {
+  const type = useType();
   const [content, setContent] = useState("");
   const [commentList, setCommentList] = useState(comments);
 
@@ -36,12 +42,12 @@ export default function CommentSection({ articleId, comments }) {
       <form className="space-y-4" onSubmit={handleCommentSubmit}>
         <div className="flex flex-col gap-2 mb-4">
           <Label htmlFor="comment" className="font-bold text-lg">
-            댓글달기
+            {label}
           </Label>
           <Textarea
             id="comment"
-            className="bg-[#F3F4F6] font-medium text-[16px] w-full h-[104px] px-6 pt-3"
-            placeholder="댓글을 입력해주세요."
+            className="bg-[#F3F4F6] text-[#9CA3AF] font-medium text-[16px] w-full h-[104px] px-6 pt-3"
+            placeholder={placeholder}
             value={content}
             onChange={(e) => {
               console.log(e.target.value); // log to check if content is updating
@@ -61,7 +67,7 @@ export default function CommentSection({ articleId, comments }) {
           </Button>
         </div>
       </form>
-      <CommentList comments={commentList} articleId={articleId} />
+      <CommentList comments={commentList} articleId={articleId} type={type} />
     </div>
   );
 }

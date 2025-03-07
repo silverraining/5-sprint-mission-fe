@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import GetProductApi from "@/services/api/products";
+import { fetchProducts } from "@/services/api/products";
 import ProductCard from "./ProductCard";
 import Select from "@/components/Select";
 import SearchBar from "@/components/SearchBar";
@@ -37,7 +37,7 @@ const ProductList = () => {
   // 데이터 가져오기 (Next.js 최적화)
   const fetchPageData = useCallback(async () => {
     try {
-      const response = await GetProductApi({
+      const response = await fetchProducts({
         orderBy,
         page: page.toString(),
         pageSize: itemsPerPage.toString(),
@@ -96,9 +96,12 @@ const ProductList = () => {
 
       {/* 아이템 목록 */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:px-6 lg:grid-cols-5 gap-4 w-full mt-6 mb-[43px]">
-        {data.slice(0, itemsPerPage).map((item) => (
-          <ProductCard key={item.id} item={item} />
-        ))}
+        {Array.isArray(data) &&
+          data
+            .slice(0, itemsPerPage)
+            .map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
       </div>
 
       {/* 페이지네이션
