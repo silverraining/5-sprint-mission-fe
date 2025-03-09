@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
-    //withCredentials: true, // 쿠키 전달 설정
+    withCredentials: true, // 쿠키 전달 설정
   },
 });
 
@@ -14,6 +14,7 @@ instance.interceptors.request.use(
       const token = localStorage.getItem("accessToken");
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+        //accessToken을 읽어서 요청 헤더에 추가 (사용하는 setItem과는 다름)
       }
     }
     return config;

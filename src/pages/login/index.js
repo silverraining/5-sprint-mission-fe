@@ -20,6 +20,8 @@ export default function LoginPage() {
     mutationFn: signIn, // signIn(userData)
     onSuccess: (data) => {
       console.log("로그인 성공", data);
+      // HACK 로그인 성공 시 userData를 localStorage에 저장
+      localStorage.setItem("userData", JSON.stringify(data));
       // 로그인 성공 후 페이지 이동
       window.location.href = "/items";
     },

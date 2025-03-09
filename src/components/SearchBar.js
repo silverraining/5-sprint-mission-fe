@@ -10,6 +10,7 @@ const SearchBar = ({ value, onChange }) => {
         width={24}
         height={24}
         className="absolute left-3 top-2"
+        alt="search"
       />
       <input
         type="text"
