@@ -1,19 +1,50 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import Image from "next/image";
-
+import { signIn } from "@/services/api/auth";
+import { Modal } from "@/Common/modals/Modal";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal 상태 추가
+  const [modalMessage, setModalMessage] = useState(""); // Modal 메시지 상태 추가
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm();
 
+  const mutation = useMutation({
+    mutationFn: signIn, // signIn(userData)
+    onSuccess: (data) => {
+      console.log("로그인 성공", data);
+      // 로그인 성공 후 페이지 이동
+      window.location.href = "/items";
+    },
+    onError: (error) => {
+      console.error("로그인 실패", error);
+      // 로그인 실패 시, 모달 메시지 및 input 에러 메시지 설정
+      // 구체적인 메시지 대신 일반적인 메시지 설정 (보안 측면)
+      let modalMessage = "이메일 또는 비밀번호가 일치하지 않습니다.";
+      setError("email", {
+        type: "manual",
+        message: "이메일을 확인해주세요.", // 이메일 필드 에러 메시지
+      });
+      setError("password", {
+        type: "manual",
+        message: "비밀번호를 확인해주세요.", // 비밀번호 필드 에러 메시지
+      });
+      setModalMessage(modalMessage); // Modal에 메시지 설정
+      setIsModalOpen(true); // 로그인 실패 시 Modal 열기
+    },
+  });
   const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
-    // Handle login logic here (e.g., API request)
+    mutation.mutate(data); // useMutation 실행
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Modal 닫기
   };
   return (
     <div className="flex flex-col items-center min-h-screen px-4 py-20">
@@ -34,7 +65,13 @@ export default function LoginPage() {
           <label className="block text-gray-700 font-bold mb-2">이메일</label>
           <input
             type="email"
-            {...register("email", { required: "이메일을 입력해주세요." })}
+            {...register("email", {
+              required: "이메일을 입력해주세요.",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "이메일 형식에 맞게 입력해주세요.",
+              },
+            })}
             className=" w-full p-3  rounded-md focus:ring bg-[#F3F4F6] focus:ring-blue-300"
             placeholder="이메일을 입력해주세요"
           />
@@ -46,13 +83,23 @@ export default function LoginPage() {
           <label className="block text-gray-700 font-bold mb-2">비밀번호</label>
           <input
             type={showPassword ? "text" : "password"}
-            {...register("password", { required: "비밀번호를 입력해주세요." })}
+            {...register("password", {
+              required: "비밀번호를 입력해주세요.",
+              minLength: {
+                value: 8,
+                message: "비밀번호는 8자리 이상 12자리 미만으로 입력해주세요.",
+              },
+              maxLength: {
+                value: 12,
+                message: "비밀번호는 8자리 이상 12자리 미만으로 입력해주세요.",
+              },
+            })}
             className="w-full p-3 bg-[#F3F4F6] rounded-md focus:ring focus:ring-blue-300"
             placeholder="비밀번호를 입력해주세요"
           />
           <button
             type="button"
-            className="absolute right-3 top-12"
+            className="absolute right-3 top-12 cursor-pointer"
             onClick={() => setShowPassword(!showPassword)}
           >
             <Image
@@ -102,6 +149,11 @@ export default function LoginPage() {
           회원가입
         </Link>
       </footer>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        message={modalMessage}
+      />
     </div>
   );
 }

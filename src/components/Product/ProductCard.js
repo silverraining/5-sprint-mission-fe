@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+
 const customLoader = ({ src }) => {
   return src; // 원본 URL 그대로 사용
 };
@@ -21,7 +22,7 @@ const ProductCard = ({ product }) => {
   };
   return (
     <div className="flex-col w-full gap-4">
-      <Link href={`/marketplace/${product.id}`}>
+      <Link href={`/items/${product.id}`}>
         <Image
           loader={customLoader}
           src={imgSrc}

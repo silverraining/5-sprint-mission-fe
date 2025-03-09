@@ -1,17 +1,37 @@
+import { useState } from "react";
 import ToggleDropdown from "@/components/ToggleDropdown";
 import Image from "next/image";
 import dayjs from "dayjs";
 import HeartTag from "@/components/HeartTag"; // You can use HeartTag if you want to show favorite count or like feature
 import { useRouter } from "next/router";
+import { DoubleCheckModal } from "@/Common/modals/DoubleCheckModal";
 
 export default function ProductDetail({ product, onDelete }) {
   const router = useRouter();
   const username = product.username || "귀여운 판다"; // Default username if not available
 
+  // ✅ 모달 상태 추가
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 삭제 버튼 클릭 시 모달 열기
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // 모달에서 "네" 클릭 시 삭제 실행
+  const handleDeleteConfirm = () => {
+    onDelete(product.id);
+    setIsModalOpen(false);
+  };
   // Edit page navigation
   const handleEdit = (productId) => {
     if (productId) {
-      router.push(`/marketplace/product/edit?id=${productId}`); // Navigate to the product edit page
+      router.push(`/items/product/edit?id=${productId}`); // Navigate to the product edit page
     }
   };
 
@@ -38,7 +58,7 @@ export default function ProductDetail({ product, onDelete }) {
           <ToggleDropdown
             onEdit={handleEdit}
             id={product.id}
-            onDelete={onDelete} // Assuming you have a function to handle product deletion
+            onDelete={handleOpenModal} // Assuming you have a function to handle product deletion
           />
         </div>
         <p className="font-bold text-lg mt-2">
@@ -67,6 +87,28 @@ export default function ProductDetail({ product, onDelete }) {
         {/* If you want to show the favorite count */}
       </div>
       <div className="border-t border-gray-300 my-2 mb-4"></div>
+
+      {/* ✅ 모달 추가 */}
+      <DoubleCheckModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        message="정말로 상품을 삭제하시겠어요?"
+      >
+        <div className="flex">
+          <button
+            onClick={handleCloseModal}
+            className="text-[#F74747] border border-[#F74747] w-[88px] h-[48px] rounded-md"
+          >
+            취소
+          </button>
+          <button
+            onClick={handleDeleteConfirm} // "네" 클릭 시 삭제
+            className="bg-[#F74747] text-white w-[88px] h-[48px] rounded-md"
+          >
+            네
+          </button>
+        </div>
+      </DoubleCheckModal>
     </section>
   );
 }

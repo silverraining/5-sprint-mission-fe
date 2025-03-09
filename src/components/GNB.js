@@ -19,10 +19,10 @@ export const NavSection = () => {
           자유게시판
         </h4>
       </Link>
-      <Link href="/marketplace">
+      <Link href="/items">
         <h4
           className={`text-[16px] whitespace-nowrap md:text-lg font-bold ${
-            pathname === "/marketplace" ? "text-[#3692FF]" : ""
+            pathname === "/items" ? "text-[#3692FF]" : ""
           }`}
         >
           중고마켓

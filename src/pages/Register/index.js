@@ -1,21 +1,67 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import Image from "next/image";
+import { Modal } from "@/Common/modals/Modal";
+import { signUp } from "@/services/api/auth";
 
+// TODO: 회원가입 실패 메시지 설정
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showpasswordConfirmation, setShowpasswordConfirmation] =
+    useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => {
+  const mutation = useMutation({
+    mutationFn: signUp,
+    onSuccess: () => {
+      window.location.href = "/items";
+      setModalMessage("가입이 완료되었어요.");
+      setIsModalOpen(true);
+    },
+    onError: (error) => {
+      if (error.response) {
+        console.log("서버 응답 데이터:", error.response.data);
+        console.log("서버 상태 코드:", error.response.status);
+        console.log("헤더:", error.response.headers);
+        setModalMessage(
+          error.response.data.message || "회원가입에 실패했습니다."
+        );
+      } else {
+        console.log("에러 메시지:", error.message);
+        setModalMessage("서버와 통신할 수 없습니다.");
+      }
+      setIsModalOpen(true);
+    },
+  });
+  const onSubmit = async (data) => {
     console.log("회원가입 데이터:", data);
-    // 회원가입 로직 처리 (예: API 요청)
+
+    // 테스트: 특정 이메일이면 모달 띄우기
+    if (data.email === "test@example.com") {
+      setModalMessage("사용 중인 이메일입니다.");
+      setIsModalOpen(true);
+      return;
+    }
+
+    if (data.password !== data.passwordConfirmation) {
+      setModalMessage("비밀번호가 일치하지 않습니다.");
+      setIsModalOpen(true);
+      return;
+    }
+    mutation.mutate({
+      email: data.email,
+      nickname: data.nickname,
+      password: data.password,
+      passwordConfirmation: data.passwordConfirmation,
+    });
   };
 
   return (
@@ -74,7 +120,7 @@ export default function RegisterPage() {
           />
           <button
             type="button"
-            className="absolute right-3 top-12"
+            className="absolute right-3 top-12 cursor-pointer"
             onClick={() => setShowPassword(!showPassword)}
           >
             <Image
@@ -97,8 +143,8 @@ export default function RegisterPage() {
             비밀번호 확인
           </label>
           <input
-            type={showConfirmPassword ? "text" : "password"}
-            {...register("confirmPassword", {
+            type={showpasswordConfirmation ? "text" : "password"}
+            {...register("passwordConfirmation", {
               required: "비밀번호를 다시 입력해주세요.",
             })}
             className="w-full p-3 bg-[#F3F4F6] rounded-md focus:ring focus:ring-blue-300"
@@ -106,19 +152,21 @@ export default function RegisterPage() {
           />
           <button
             type="button"
-            className="absolute right-3 top-12"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-3 top-12 cursor-pointer"
+            onClick={() =>
+              setShowpasswordConfirmation(!showpasswordConfirmation)
+            }
           >
             <Image
-              src={showConfirmPassword ? "/eye-on.svg" : "/eye-off.svg"}
+              src={showpasswordConfirmation ? "/eye-on.svg" : "/eye-off.svg"}
               width={20}
               height={20}
               alt="비밀번호 보기"
             />
           </button>
-          {errors.confirmPassword && (
+          {errors.passwordConfirmation && (
             <p className="text-red-500 text-sm mt-1">
-              {errors.confirmPassword.message}
+              {errors.passwordConfirmation.message}
             </p>
           )}
         </div>
@@ -131,6 +179,12 @@ export default function RegisterPage() {
           회원가입
         </button>
       </form>
+      {/* 모달 - 이메일 중복 경고 */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message={modalMessage}
+      />
 
       {/* 간편 로그인 */}
       <div className="w-full max-w-md bg-[#E6F2FF] min-w-[343px] min-h-[74px] md:min-w-[640px] flex rounded-lg px-6 justify-between items-center">

@@ -16,7 +16,7 @@ export default function ProductDetailPage({ product, comments }) {
       try {
         await deleteProduct(productId); // Call your delete API
         alert("상품이 삭제되었습니다.");
-        router.push("/marketplace"); // Redirect to the marketplace after deletion
+        router.push("/items"); // Redirect to the marketplace after deletion
       } catch (error) {
         console.error("상품 삭제 실패:", error);
         alert("상품 삭제 중 오류가 발생했습니다.");
@@ -38,10 +38,7 @@ export default function ProductDetailPage({ product, comments }) {
         placeholder="개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이데 대한 민형사상 책임은 게시자에게 있습니다."
         type="product"
       />
-      <Link
-        href="/marketplace"
-        className="block text-center mt-12 w-[240px] mx-auto"
-      >
+      <Link href="/items" className="block text-center mt-12 w-[240px] mx-auto">
         <img
           src="/btn_back.svg"
           alt="목록으로 돌아가기"
