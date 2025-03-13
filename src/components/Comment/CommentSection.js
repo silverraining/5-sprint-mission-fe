@@ -50,7 +50,7 @@ export default function CommentSection({
             placeholder={placeholder}
             value={content}
             onChange={(e) => {
-              console.log(e.target.value); // log to check if content is updating
+              console.log(e.target.value);
               setContent(e.target.value);
             }}
           />

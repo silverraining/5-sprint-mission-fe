@@ -6,31 +6,59 @@ import { deleteProduct } from "@/services/api/products"; // Assuming this functi
 import CommentSection from "@/components/Comment/CommentSection";
 import Link from "next/link";
 import { TypeProvider } from "@/contexts/TypeContext";
+import { Modal } from "@/Common/modals/Modal";
+
 export default function ProductDetailPage({ product, comments }) {
+  console.log("상품아이디1: ", product.id);
   const router = useRouter();
   const { id } = router.query;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  // 로그인 상태를 useEffect로 확인
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      setIsLoginModalOpen(true); // 토큰이 없으면 로그인 모달 띄움
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [router]);
 
-  // Handle product deletion
-  const handleDelete = async (productId) => {
-    if (confirm("상품을 삭제하시겠습니까?")) {
-      try {
-        await deleteProduct(productId); // Call your delete API
-        alert("상품이 삭제되었습니다.");
-        router.push("/items"); // Redirect to the marketplace after deletion
-      } catch (error) {
-        console.error("상품 삭제 실패:", error);
-        alert("상품 삭제 중 오류가 발생했습니다.");
-      }
+  const handleDelete = async (product) => {
+    console.log("상품아이디2: ", product.id);
+    try {
+      const response = await deleteProduct(product.id);
+      console.log(product.id);
+      console.log("Product deleted successfully:", response);
+      router.push("/items");
+    } catch (error) {
+      console.error(
+        "상품 삭제 실패:",
+        error.response ? error.response.data : error.message
+      );
+      alert("상품 삭제 중 오류가 발생했습니다.");
     }
   };
 
-  if (!router.isReady || !product) return <div>⏳ 페이지 로딩 중...</div>;
+  // 로그인 모달을 닫고 로그인 페이지로 이동
+  const handleLoginRedirect = () => {
+    setIsLoginModalOpen(false);
+    router.push("/login"); // 로그인 페이지로 리다이렉트
+  };
 
+  if (!router.isReady || !product) return <div>⏳ 페이지 로딩 중...</div>;
+  if (!isAuthenticated) {
+    return (
+      <Modal
+        isOpen={isLoginModalOpen}
+        onClose={handleLoginRedirect}
+        message="로그인 후에 이용 가능합니다."
+      />
+    );
+  }
   return (
     <TypeProvider type="product">
-      {" "}
-      {/* Wrap with TypeProvider */}
-      <ProductDetail product={product} onDelete={handleDelete} />
+      <ProductDetail product={product} onDelete={() => handleDelete(product)} />
       <CommentSection
         ProductId={id}
         comments={comments}
@@ -52,10 +80,10 @@ export default function ProductDetailPage({ product, comments }) {
 }
 
 export async function getServerSideProps(context) {
-  const { id } = context.params; // Get product ID from URL
+  const { id } = context.params;
 
   try {
-    const product = await fetchProductById(id); // Fetch product data by ID
+    const product = await fetchProductById(id);
     return {
       props: {
         product,

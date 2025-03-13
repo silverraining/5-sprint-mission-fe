@@ -19,9 +19,9 @@ export default function BestProductList() {
   };
 
   useEffect(() => {
-    updateItemsPerPage(); // Update items per page on mount
-    window.addEventListener("resize", updateItemsPerPage); // Add resize listener
-    return () => window.removeEventListener("resize", updateItemsPerPage); // Cleanup listener
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
   }, []);
 
   useEffect(() => {
@@ -32,14 +32,11 @@ export default function BestProductList() {
         if (Array.isArray(products)) {
           setData(products);
         } else {
-          console.error(
-            "API response does not contain a valid list:",
-            products
-          );
+          console.error(products);
           setData([]);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(error);
         setData([]);
       }
     };
@@ -51,7 +48,6 @@ export default function BestProductList() {
       <h1 className="text-2xl font-bold mt-[26px] md:px-6 mb-4">베스트 상품</h1>
 
       <div className="grid grid-flow-col grid-cols-1 sm:grid-cols-2 md:px-6 lg:grid-cols-4 gap-4 w-full mt-6 mb-[43px]">
-        {/* Display the products based on current itemsPerPage */}
         {data.length > 0 ? (
           data
             .slice(0, itemsPerPage)

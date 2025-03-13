@@ -7,7 +7,7 @@ export const Modal = ({ isOpen, onClose, message }) => {
         <p className="text-gray-800 mb-4">{message}</p>
         <button
           onClick={onClose}
-          className="bg-[#3692FF] text-white w-[120px] h-[48px] rounded-md"
+          className="cursor-pointer bg-[#3692FF] text-white w-[120px] h-[48px] rounded-md"
         >
           확인
         </button>

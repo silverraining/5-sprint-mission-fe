@@ -20,7 +20,7 @@ const ProductList = () => {
     setPage(1); // 검색 시 첫 페이지로 초기화
   };
 
-  // 화면 크기에 따라 `itemsPerPage` 업데이트
+  // 화면 크기에 따라 업데이트
   const updateItemsPerPage = useCallback(() => {
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
@@ -34,7 +34,7 @@ const ProductList = () => {
     return () => window.removeEventListener("resize", updateItemsPerPage);
   }, [updateItemsPerPage]);
 
-  // 데이터 가져오기 (Next.js 최적화)
+  // 데이터 가져오기
   const fetchPageData = useCallback(async () => {
     try {
       const response = await fetchProducts({
@@ -79,7 +79,7 @@ const ProductList = () => {
 
           {/* 상품 등록하기 버튼 */}
           <Link
-            href="/login"
+            href="/items/register"
             className="col-span-2 sm:col-span-1 order-2 sm:flex md:flex text-base w-[calc(100%-6rem)] mr-12 sm:w-[133px] md:w-[133px] sm:mr-0 whitespace-nowrap font-semibold text-center h-[42px] sm:py-2 md:px-4 sm:px-6 bg-[#3692ff] mx-auto border-none rounded-lg text-[#f3f4f6] no-underline cursor-pointer flex items-center justify-center"
           >
             상품 등록하기

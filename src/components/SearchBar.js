@@ -16,7 +16,7 @@ const SearchBar = ({ value, onChange }) => {
         type="text"
         placeholder=" 검색할 상품을 입력해주세요"
         value={value}
-        onChange={(e) => onChange(e.target.value)} // 부모에서 전달된 onChange 호출
+        onChange={(e) => onChange(e.target.value)}
         className="w-full outline-none px-2 pl-8"
       />
     </form>

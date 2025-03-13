@@ -1,4 +1,13 @@
-import instance from "@/services/api/axios";
+import axios from "axios";
+const API_URL = "https://sprint-mission08-be.onrender.com";
+
+const instance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+    // withCredentials: true, // 쿠키 전달 설정
+  },
+});
 
 // 게시글 목록 조회 (검색 기능 추가)
 export const fetchArticles = async (

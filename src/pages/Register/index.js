@@ -17,11 +17,12 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({ mode: "onChange" }); // onChange 모드로 폼 유효성 검사 활성화
   const mutation = useMutation({
     mutationFn: signUp,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      localStorage.setItem("userData", JSON.stringify(data));
       window.location.href = "/items";
       setModalMessage("가입이 완료되었어요.");
       setIsModalOpen(true);

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthProvider";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn } from "@/services/api/auth";
+
 import { Modal } from "@/Common/modals/Modal";
+
 export default function LoginPage() {
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal 상태 추가
   const [modalMessage, setModalMessage] = useState(""); // Modal 메시지 상태 추가
@@ -16,34 +18,47 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
 
-  const mutation = useMutation({
-    mutationFn: signIn, // signIn(userData)
-    onSuccess: (data) => {
-      console.log("로그인 성공", data);
-      // HACK 로그인 성공 시 userData를 localStorage에 저장
+  // const mutation = useMutation({
+  //   mutationFn: signIn, // signIn(userData)
+  //   onSuccess: (data) => {
+  //     console.log("로그인 성공", data);
+  //     // HACK 로그인 성공 시 userData를 localStorage에 저장
+  //     localStorage.setItem("userData", JSON.stringify(data));
+  //     // 로그인 성공 후 페이지 이동
+  //     window.location.href = "/items";
+  //   },
+  //   onError: (error) => {
+  //     console.error("로그인 실패", error);
+  //     // 로그인 실패 시, 모달 메시지 및 input 에러 메시지 설정
+  //     // 구체적인 메시지 대신 일반적인 메시지 설정 (보안 측면)
+  //     let modalMessage = "이메일 또는 비밀번호가 일치하지 않습니다.";
+  //     setError("email", {
+  //       type: "manual",
+  //       message: "이메일을 확인해주세요.", // 이메일 필드 에러 메시지
+  //     });
+  //     setError("password", {
+  //       type: "manual",
+  //       message: "비밀번호를 확인해주세요.", // 비밀번호 필드 에러 메시지
+  //     });
+  //     setModalMessage(modalMessage); // Modal에 메시지 설정
+  //     setIsModalOpen(true); // 로그인 실패 시 Modal 열기
+  //   },
+  // });
+  const onSubmit = async (data) => {
+    try {
+      await login(data); // useAuth의 login 함수 호출
       localStorage.setItem("userData", JSON.stringify(data));
-      // 로그인 성공 후 페이지 이동
-      window.location.href = "/items";
-    },
-    onError: (error) => {
+      window.location.href = "/items"; // 로그인 성공 시 이동
+    } catch (error) {
       console.error("로그인 실패", error);
-      // 로그인 실패 시, 모달 메시지 및 input 에러 메시지 설정
-      // 구체적인 메시지 대신 일반적인 메시지 설정 (보안 측면)
-      let modalMessage = "이메일 또는 비밀번호가 일치하지 않습니다.";
-      setError("email", {
-        type: "manual",
-        message: "이메일을 확인해주세요.", // 이메일 필드 에러 메시지
-      });
+      setError("email", { type: "manual", message: "이메일을 확인해주세요." });
       setError("password", {
         type: "manual",
-        message: "비밀번호를 확인해주세요.", // 비밀번호 필드 에러 메시지
+        message: "비밀번호를 확인해주세요.",
       });
-      setModalMessage(modalMessage); // Modal에 메시지 설정
-      setIsModalOpen(true); // 로그인 실패 시 Modal 열기
-    },
-  });
-  const onSubmit = (data) => {
-    mutation.mutate(data); // useMutation 실행
+      setModalMessage("이메일 또는 비밀번호가 일치하지 않습니다.");
+      setIsModalOpen(true);
+    }
   };
   const handleCloseModal = () => {
     setIsModalOpen(false); // Modal 닫기

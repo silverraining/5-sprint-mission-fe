@@ -18,7 +18,7 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
   const handleSave = async () => {
     try {
       const updatedComment = await updateComment(
-        "ARTICLE", // 또는 'PRODUCT'로 변경
+        "ARTICLE", // 또는 'PRODUCT'
         articleId,
         comment.id,
         editedContent
@@ -63,7 +63,7 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
         <ToggleDropdown
           id={comment.id}
           onDelete={handleDelete}
-          onEdit={handleEdit} // 수정하기 핸들러 전달
+          onEdit={handleEdit}
         />
       </div>
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const DoubleCheckModal = ({ isOpen, onClose, message }) => {
+export const DoubleCheckModal = ({ isOpen, onClose, onDelete, message }) => {
   if (!isOpen) return null;
 
   return (
@@ -11,13 +11,13 @@ export const DoubleCheckModal = ({ isOpen, onClose, message }) => {
         <div className="flex gap-2">
           <button
             onClick={onClose}
-            className=" text-[#F74747] border border-[#F74747] w-[88px] h-[48px] rounded-md"
+            className="cursor-pointer text-[#F74747] border border-[#F74747] w-[88px] h-[48px] rounded-md"
           >
             취소
           </button>
           <button
-            onClick={onClose}
-            className="bg-[#F74747] text-white w-[88px] h-[48px] rounded-md"
+            onClick={onDelete}
+            className="cursor-pointer bg-[#F74747] text-white w-[88px] h-[48px] rounded-md"
           >
             네
           </button>

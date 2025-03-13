@@ -39,13 +39,20 @@ export const fetchProductById = async (id) => {
   }
 };
 
-export const createProduct = async ({ name, description, price, image }) => {
+export const createProduct = async ({
+  name,
+  description,
+  price,
+  imageUrl,
+  tags,
+}) => {
   try {
     const response = await instance.post(`${BASE_URL}`, {
       name,
       description,
       price,
-      image,
+      images: [imageUrl], // 이미지 URL 배열로
+      tags: tags,
     });
     return response.data;
   } catch (error) {
@@ -54,12 +61,25 @@ export const createProduct = async ({ name, description, price, image }) => {
   }
 };
 
-export const updateProduct = async (id, productData) => {
+export const updateProduct = async (data) => {
+  if (!data.name || !data.description || !data.price) {
+    throw new Error("Missing required fields");
+  }
+
+  const { id, imageUrl, ...dataToSend } = data;
+
+  // `imageUrl`을 `images` 배열로 감싸기
+  const updatedData = {
+    ...dataToSend,
+    images: [imageUrl],
+  };
+
   try {
-    const response = await instance.patch(`${BASE_URL}/${id}`, productData);
+    const response = await instance.patch(`${BASE_URL}/${id}`, updatedData);
+    console.log("Updated product:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error updating product:", error);
+    console.error("Error updating product:", error.response?.data || error);
     throw error;
   }
 };

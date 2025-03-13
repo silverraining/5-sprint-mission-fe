@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AuthProvider } from "@/contexts/AuthProvider";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -20,20 +22,22 @@ export default function App({ Component, pageProps }) {
   const hideLayout = ["/login", "/register"].includes(router.pathname);
   return (
     <QueryClientProvider client={queryClient}>
-      <Head>
-        <title>판다마켓</title>
-        <link rel="icon" href="/favicon.ico" />
-        {/* <style>{fontStyle}</style> */}
-      </Head>
-      {!hideLayout && <GNB />}
-      <Container
-        page
-        className="min-h-screen w-full max-w-full xl:max-w-[1520px] px-4"
-      >
-        <Component {...pageProps} />
-      </Container>
-      {!hideLayout && <Footer />}
-      <ReactQueryDevtools initialIsOpen={false} />
+      <AuthProvider>
+        {/* AuthProvider 추가 */}
+        <Head>
+          <title>판다마켓</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        {!hideLayout && <GNB />}
+        <Container
+          page
+          className="min-h-screen w-full max-w-full xl:max-w-[1520px] px-4"
+        >
+          <Component {...pageProps} />
+        </Container>
+        {!hideLayout && <Footer />}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

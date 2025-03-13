@@ -22,11 +22,12 @@ export default function ToggleDropdown({ onEdit, onDelete, id }) {
       setIsOpen(false);
     }
   };
+
   // Close the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false); // Close the dropdown if clicked outside
+        setIsOpen(false);
       }
     };
 
@@ -36,7 +37,6 @@ export default function ToggleDropdown({ onEdit, onDelete, id }) {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* Image used as the toggle button */}
       <Image
         src="/ic_kebab.svg"
         width={24}
