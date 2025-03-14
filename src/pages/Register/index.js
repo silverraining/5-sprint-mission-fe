@@ -4,23 +4,23 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import Image from "next/image";
 import { Modal } from "@/Common/modals/Modal";
-import { signUp } from "@/services/api/auth";
-
+import { useAuth } from "@/contexts/AuthProvider";
 // TODO: 회원가입 실패 메시지 설정
 export default function RegisterPage() {
+  const { join, modalMessage, setModalMessage, isModalOpen, setIsModalOpen } =
+    useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showpasswordConfirmation, setShowpasswordConfirmation] =
     useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-  const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    setError,
+    formState: { errors },
   } = useForm({ mode: "onChange" }); // onChange 모드로 폼 유효성 검사 활성화
   const mutation = useMutation({
-    mutationFn: signUp,
+    mutationFn: join,
     onSuccess: (data) => {
       localStorage.setItem("userData", JSON.stringify(data));
       window.location.href = "/items";
@@ -28,41 +28,40 @@ export default function RegisterPage() {
       setIsModalOpen(true);
     },
     onError: (error) => {
-      if (error.response) {
-        console.log("서버 응답 데이터:", error.response.data);
-        console.log("서버 상태 코드:", error.response.status);
-        console.log("헤더:", error.response.headers);
-        setModalMessage(
-          error.response.data.message || "회원가입에 실패했습니다."
-        );
-      } else {
-        console.log("에러 메시지:", error.message);
-        setModalMessage("서버와 통신할 수 없습니다.");
-      }
-      setIsModalOpen(true);
+      console.log("에러 메시지:", error.message); // 에러 메시지 출력
+      const errorMessage =
+        error.response.data.message || "회원가입에 실패했습니다.";
+      setModalMessage(errorMessage); // 모달 메시지 설정
+      setIsModalOpen(true); // 모달 띄우기
     },
   });
+
   const onSubmit = async (data) => {
-    console.log("회원가입 데이터:", data);
-
-    // 테스트: 특정 이메일이면 모달 띄우기
-    if (data.email === "test@example.com") {
-      setModalMessage("사용 중인 이메일입니다.");
+    try {
+      await join(data);
+      window.location.href = "/login";
+      setModalMessage("가입이 완료되었어요. 로그인 해주세요.");
       setIsModalOpen(true);
-      return;
+    } catch (error) {
+      console.error("회원가입 실패", error);
+      setError("email", { type: "manual", message: "이메일을 확인해주세요." });
+      setError("password", {
+        type: "manual",
+        message: "비밀번호를 확인해주세요.",
+      });
+      setError("passwordConfirmation", {
+        type: "manual",
+        message: "비밀번호를 재확인해주세요.",
+      });
     }
+    // console.log("회원가입 데이터:", data);
 
-    if (data.password !== data.passwordConfirmation) {
-      setModalMessage("비밀번호가 일치하지 않습니다.");
-      setIsModalOpen(true);
-      return;
-    }
-    mutation.mutate({
-      email: data.email,
-      nickname: data.nickname,
-      password: data.password,
-      passwordConfirmation: data.passwordConfirmation,
-    });
+    // mutation.mutate({
+    //   email: data.email,
+    //   nickname: data.nickname,
+    //   password: data.password,
+    //   passwordConfirmation: data.passwordConfirmation,
+    // });
   };
 
   return (
