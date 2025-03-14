@@ -5,6 +5,7 @@ import { Modal } from "@/Common/modals/Modal";
 import { createProduct } from "@/services/api/products";
 import AuthLayout from "@/layouts/AuthLayout";
 import { useRouter } from "next/router";
+import Image from "next/image";
 export default function ProductRegisterPage({ product }) {
   const [tags, setTags] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,7 +60,7 @@ export default function ProductRegisterPage({ product }) {
   };
   // 태그 추가 함수
   const addTag = (tag) => {
-    if (tag && tag.length <= 5 && !tags.includes(tag)) {
+    if (tag && !tags.includes(tag)) {
       setTags([...tags, tag]);
     }
   };
@@ -68,7 +69,6 @@ export default function ProductRegisterPage({ product }) {
   const removeTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
-
   return (
     <AuthLayout>
       <div className="flex flex-col items-center min-h-screen px-4 py-20">
@@ -178,7 +178,6 @@ export default function ProductRegisterPage({ product }) {
             />
           </div>
 
-          {/* 태그 리스트 */}
           <div className="flex flex-wrap gap-2 mt-4">
             {tags.map((tag, index) => (
               <span
@@ -190,9 +189,10 @@ export default function ProductRegisterPage({ product }) {
                   src="/ic_X.png"
                   className="ml-2 text-red-500 cursor-pointer"
                   onClick={() => removeTag(tag)}
-                >
-                  X
-                </Image>
+                  width={16}
+                  height={16}
+                  alt="Remove"
+                />
               </span>
             ))}
           </div>
