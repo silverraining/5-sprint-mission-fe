@@ -60,13 +60,14 @@ export default function CommentSection({
   return (
     <div className="max-w-[1200px] w-full mx-auto px-4">
       <form className="space-y-4" onSubmit={handleCommentSubmit}>
+        <div className="border-t border-gray-300 my-8 md:max-w-[1200px] md:mx-auto px-4"></div>
         <div className="flex flex-col gap-2 mb-4">
           <Label htmlFor="comment" className="font-bold text-lg">
             {label}
           </Label>
           <Textarea
             id="comment"
-            className="bg-[#F3F4F6] text-[#9CA3AF] font-medium text-[16px] w-full h-[104px] px-6 pt-3"
+            className="bg-[#F3F4F6] placeholder:text-[#9CA3AF] text-black font-medium text-[16px] placeholder:text-[16px] w-full h-[104px] px-6 pt-3"
             placeholder={placeholder}
             value={content}
             onChange={(e) => {

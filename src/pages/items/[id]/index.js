@@ -18,7 +18,7 @@ export default function ProductDetailPage({ product, comments }) {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      setIsLoginModalOpen(true); // 토큰이 없으면 로그인 모달 띄움
+      setIsLoginModalOpen(true);
     } else {
       setIsAuthenticated(true);
     }
@@ -72,7 +72,7 @@ export default function ProductDetailPage({ product, comments }) {
           alt="목록으로 돌아가기"
           width={240}
           height={48}
-          className=" cursor-pointer"
+          className=" cursor-pointer mb-[210px]"
         />
       </Link>
     </TypeProvider>

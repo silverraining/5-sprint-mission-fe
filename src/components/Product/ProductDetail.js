@@ -92,7 +92,7 @@ export default function ProductDetail({ product, onDelete }) {
       <div className="flex-1">
         <section>
           <div className="flex justify-between">
-            <h2 className="font-bold text-xl whitespace-nowrap">
+            <h2 className="font-bold text-xl whitespace-nowrap mt-4 md:mt-0">
               {product.name}
             </h2>
 
@@ -115,17 +115,21 @@ export default function ProductDetail({ product, onDelete }) {
           <div>
             <h2 className="font-semibold mb-3 text-sm">상품 태그</h2>
 
-            <div className="flex space-x-2">
-              {product.tags.map((_, i) => (
-                <Tag key={i} tags={product.tags[i]} />
-              ))}
-            </div>
+            {product.tags.length > 0 ? (
+              <div className="flex space-x-2 mb-6">
+                {product.tags.map((tag, i) => (
+                  <Tag key={i} tags={tag} />
+                ))}
+              </div>
+            ) : (
+              <div className="mb-10 md:mb-44"></div> // 태그가 없을 경우 여백 유지
+            )}
           </div>
 
           <div className="flex justify-between md:justify-between">
             <div className="flex items-center gap-4">
               <Image
-                src={product.imageUrl || "/ic_profile.png"}
+                src={user.image || "/ic_profile.png"}
                 width={40}
                 height={40}
                 alt="profile"
@@ -147,7 +151,7 @@ export default function ProductDetail({ product, onDelete }) {
           </div>
         </section>
       </div>
-      <div className="border-t border-gray-300 my-6 mb-4"></div>
+      {/* <div className="border-t border-gray-300 my-6 mb-4"></div> */}
 
       {/* ✅ 모달 추가 */}
       <Modal
