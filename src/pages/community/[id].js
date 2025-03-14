@@ -58,12 +58,10 @@ export default function ArticleDetailPage({ article, comments }) {
     }
   };
 
-  // 댓글 입력이 있을 경우 등록 버튼 활성화 여부 확인
-
   return (
     <>
       <ArticleDetail article={article} onDelete={handleDelete} />
-      <CommentSection articleId={id} comments={comments} />
+      <CommentSection id={article.id} comments={comments} />
       <Link
         href="/community"
         className="block text-center mt-12 w-[240px] mx-auto"

@@ -3,13 +3,15 @@ import Image from "next/image";
 import ToggleDropdown from "../ToggleDropdown";
 import { useRouter } from "next/router";
 import { updateComment, deleteComment } from "@/services/api/comment";
+import { timeAgo } from "@/lib/timeAgo";
+import { DoubleCheckModal } from "@/Common/modals/DoubleCheckModal";
 const defaultProfile = "/ic_profile.png";
 
-export default function Comment({ comment, onDelete, articleId, onUpdate }) {
+export default function Comment({ comment, onDelete, id, onUpdate, type }) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // 수정 모드로 전환
   const handleEdit = () => {
     setIsEditing(true);
@@ -17,12 +19,7 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
 
   const handleSave = async () => {
     try {
-      const updatedComment = await updateComment(
-        "ARTICLE", // 또는 'PRODUCT'
-        articleId,
-        comment.id,
-        editedContent
-      );
+      const updatedComment = await updateComment(comment.id, editedContent);
       onUpdate(updatedComment); // 부모 컴포넌트에서 댓글 리스트 업데이트
       setIsEditing(false);
     } catch (err) {
@@ -37,15 +34,25 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
   };
 
   // 댓글 삭제
-  const handleDelete = async () => {
+  const handleDelete = () => {
+    setIsModalOpen(true); // 모달 열기
+  };
+
+  // 댓글 삭제 실행
+  const confirmDelete = async () => {
     try {
-      await deleteComment("ARTICLE", articleId, comment.id);
-      onDelete(comment.id); // 부모 컴포넌트에서 댓글 리스트 상태를 갱신
+      await deleteComment(comment.id);
+      onDelete(comment.id);
+      setIsModalOpen(false);
     } catch (err) {
       console.error("댓글 삭제 실패:", err);
     }
   };
 
+  // 모달 닫기
+  const cancelDelete = () => {
+    setIsModalOpen(false); // 취소 시 모달 닫기
+  };
   return (
     <div className="bg-[#fcfcfc] p-4 mb-4 border-b gap-6">
       <div className="flex justify-between items-center pb-8">
@@ -71,13 +78,13 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
         <div className="flex justify-end gap-4">
           <button
             onClick={handleCancel}
-            className=" text-[#737373] text-[16px] font-semibold px-4 py-2 rounded-lg"
+            className="cursor-pointer text-[#737373] text-[16px] font-semibold px-4 py-2 rounded-lg"
           >
             취소
           </button>
           <button
             onClick={handleSave}
-            className="bg-[#3692FF] text-white text-[16px] font-semibold px-4 py-2 rounded-lg"
+            className="cursor-pointer bg-[#3692FF] text-white text-[16px] font-semibold px-4 py-2 rounded-lg"
           >
             수정 완료
           </button>
@@ -94,10 +101,16 @@ export default function Comment({ comment, onDelete, articleId, onUpdate }) {
           />
         </div>
         <div className="flex flex-col items-start space-x-2 gap-2 text-sm text-gray-500">
-          <span>{comment.username || "뚱이 판다"}</span>
-          <span>1시간 전</span>
+          <span>{comment.writer.nickname || "뚱이 판다"}</span>
+          <div className="text-[#9CA3AF]">{timeAgo(comment.createdAt)}</div>
         </div>
       </div>
+      <DoubleCheckModal
+        isOpen={isModalOpen}
+        onClose={cancelDelete}
+        onDelete={confirmDelete}
+        message="정말로 댓글을 삭제하시겠습니까?"
+      />
     </div>
   );
 }

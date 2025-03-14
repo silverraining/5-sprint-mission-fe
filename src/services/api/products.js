@@ -54,14 +54,13 @@ export const createProduct = async ({
       images: [imageUrl], // 이미지 URL 배열로
       tags: tags,
     });
-    // 성공적으로 응답을 받으면 응답 데이터 출력
-    console.log("상품 등록 성공:", response.data);
+
+    console.log(response.data);
     return response.data;
   } catch (error) {
-    // 에러가 발생하면 에러 로그 출력
     console.error("상품 등록 에러:", error);
 
-    // 추가적으로 서버에서 받은 에러 메시지도 출력
+    // 서버에서 받은 에러 메시지
     if (error.response) {
       console.error("서버 에러 메시지:", error.response.data);
     } else {
@@ -103,4 +102,11 @@ export const deleteProduct = async (id) => {
     console.error("Error deleting product:", error);
     throw error;
   }
+};
+
+export const fetchProductComments = async (productId, limit = 10) => {
+  const response = await instance.get(`${BASE_URL}/${productId}/comments`, {
+    params: { limit },
+  });
+  return response.data;
 };

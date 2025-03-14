@@ -2,22 +2,32 @@ import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Form } from "@/components/ui/form";
+
 import CommentList from "@/components/Comment/CommentList";
 import { addComment } from "@/services/api/comment";
 import { useType } from "@/contexts/TypeContext";
+import { useRouter } from "next/router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 export default function CommentSection({
-  articleId,
-  comments,
-  label = "댓글달기", // Default value for label
-  placeholder = "댓글을 입력해주세요.", // Default value for placeholder
+  id: propId,
+  comments = [],
+  label = "댓글달기",
+  placeholder = "댓글을 입력해주세요.",
 }) {
+  const router = useRouter();
+  const { id: queryId } = router.query; // useRouter에서 가져오는 id
+  const id = propId || queryId; // props로 받은 id가 없으면 router.query.id 사용
   const type = useType();
   const [content, setContent] = useState("");
-  const [commentList, setCommentList] = useState(comments);
+
+  const queryClient = useQueryClient();
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ["comments", id], // 댓글 데이터 쿼리 키
+    queryFn: () => fetchProductComments(id),
+    initialData: { list: comments }, // 기본값 설정
+  });
 
   const handleCommentSubmit = async (e) => {
-    e.preventDefault();
     console.log("Form submitted");
     console.log("Content:", content);
 
@@ -26,11 +36,21 @@ export default function CommentSection({
       return;
     }
 
+    if (!id) {
+      console.error("댓글을 등록할 대상 ID가 없습니다.");
+      return null;
+    }
     try {
-      const newComment = await addComment(articleId, content);
-      console.log("새 댓글 데이터:", newComment);
-      setContent("");
-      setCommentList((prev) => [...prev, newComment]);
+      const newComment = await addComment(id, content, type);
+      // 댓글 등록 후, queryClient를 이용해 댓글 데이터 업데이트 (기존 데이터에 새로운 댓글 추가)
+      queryClient.setQueryData(["comments", id], (oldData) => {
+        return {
+          ...oldData,
+          list: [...oldData.list, newComment],
+        };
+      });
+
+      setContent(""); // 입력값 초기화
     } catch (error) {
       console.error("댓글 등록 실패:", error);
       alert("댓글 등록 중 오류가 발생했습니다.");
@@ -50,7 +70,6 @@ export default function CommentSection({
             placeholder={placeholder}
             value={content}
             onChange={(e) => {
-              console.log(e.target.value);
               setContent(e.target.value);
             }}
           />
@@ -67,7 +86,7 @@ export default function CommentSection({
           </Button>
         </div>
       </form>
-      <CommentList comments={commentList} articleId={articleId} type={type} />
+      <CommentList comments={data?.list || comments} id={id} type={type} />
     </div>
   );
 }

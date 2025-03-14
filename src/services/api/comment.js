@@ -1,8 +1,13 @@
 import instance from "@/services/api/axios";
 
-export const addComment = async (articleId, content) => {
+export const addComment = async (id, content, type) => {
   try {
-    const response = await instance.post(`/articles/${articleId}/comments`, {
+    const endpoint =
+      type === "PRODUCT"
+        ? `/products/${id}/comments`
+        : `/articles/${id}/comments`;
+
+    const response = await instance.post(endpoint, {
       content,
     });
 
@@ -12,18 +17,12 @@ export const addComment = async (articleId, content) => {
   }
 };
 
-export const updateComment = async (
-  resourceType,
-  resourceId,
-  commentId,
-  content
-) => {
+export const updateComment = async (commentId, content) => {
   try {
-    const response = await instance.patch(
-      `/${resourceType.toLowerCase()}s/${resourceId}/comments/${commentId}`, // 리소스 타입에 맞는 경로
-      { content }
-    );
-    console.log("API 요청 URL:", response.config.url); // 요청 URL 확인용
+    const response = await instance.patch(`/comments/${commentId}`, {
+      content,
+    });
+    console.log("API 요청 URL:", response.config.url);
     return response.data;
   } catch (err) {
     console.error("댓글 수정 실패:", err);
@@ -31,19 +30,12 @@ export const updateComment = async (
   }
 };
 
-// 프론트엔드 deleteComment 함수
-export const deleteComment = async (resourceType, resourceId, commentId) => {
+export const deleteComment = async (commentId) => {
   try {
-    // 로그 확인을 위해 articleId를 로그에 추가
-    console.log(
-      `Deleting comment with ID: ${commentId} from ${resourceType} with ID: ${resourceId}`
-    );
+    console.log(`Deleting comment with ID: ${commentId}`);
 
-    // resourceType, resourceId, commentId를 경로에 포함
-    const response = await instance.delete(
-      `/${resourceType.toLowerCase()}s/${resourceId}/comments/${commentId}`
-    );
-    console.log("Comment deleted successfully", response.data); // 성공 시 로그 출력
+    const response = await instance.delete(`/comments/${commentId}`);
+    console.log("Comment deleted successfully", response.data);
     return response.data;
   } catch (error) {
     console.error("Error deleting comment", error.response || error);
