@@ -63,8 +63,8 @@ export default function CommentList({
         <Comment
           key={comment.id}
           comment={comment}
-          onDelete={handleDelete} // 댓글 삭제 핸들러 전달
-          onUpdate={handleUpdate} // 댓글 수정 핸들러 전달
+          onDelete={handleDelete}
+          onUpdate={handleUpdate}
           articleId={articleId}
           type={currentType}
         />

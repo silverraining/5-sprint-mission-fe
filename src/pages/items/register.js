@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import { Modal } from "@/Common/modals/Modal";
 import { createProduct } from "@/services/api/products";
 import AuthLayout from "@/layouts/AuthLayout";
-export default function ProductRegisterPage() {
+import { useRouter } from "next/router";
+export default function ProductRegisterPage({ product }) {
   const [tags, setTags] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,7 +20,8 @@ export default function ProductRegisterPage() {
       name: product?.name || "",
       description: product?.description || "",
       price: product?.price || "",
-      imageUrl: product?.images?.[0] || "", // 첫 번째 이미지 URL 사용
+      imageUrl: product?.images?.[0] || "",
+      tags: [], // 첫 번째 이미지 URL 사용
     },
   });
 
@@ -28,13 +30,15 @@ export default function ProductRegisterPage() {
     onSuccess: (data) => {
       setModalMessage("상품이 성공적으로 등록되었습니다.");
       setIsModalOpen(true);
+      const productId = data.id; //
+      router.push(`/items/${productId}`);
     },
     onError: (error) => {
       if (error.response) {
-        //  console.log("서버 응답 데이터:", error.response.data);
+        console.log("서버 응답 데이터:", error.response.data);
         setModalMessage("상품 등록에 실패했습니다.");
       } else {
-        //console.log("에러 메시지:", error.message);
+        console.log("에러 메시지:", error.message);
         setModalMessage("서버와 통신할 수 없습니다.");
       }
       setIsModalOpen(true);
@@ -42,14 +46,14 @@ export default function ProductRegisterPage() {
   });
 
   const onSubmit = (data) => {
-    console.log("상품 등록 데이터:", data);
+    console.log("imageUrl before submit:", data.imageUrl);
 
     // 상품 등록 API 호출
     mutation.mutate({
       name: data.name,
       description: data.description,
       price: data.price,
-      imageUrl: product?.images?.[0] || "",
+      images: [data.imageUrl], // 이미지 URL 처리
       tags: tags,
     });
   };

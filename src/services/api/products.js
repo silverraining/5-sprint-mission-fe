@@ -43,7 +43,7 @@ export const createProduct = async ({
   name,
   description,
   price,
-  imageUrl,
+  images: [imageUrl],
   tags,
 }) => {
   try {
@@ -54,9 +54,20 @@ export const createProduct = async ({
       images: [imageUrl], // 이미지 URL 배열로
       tags: tags,
     });
+    // 성공적으로 응답을 받으면 응답 데이터 출력
+    console.log("상품 등록 성공:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error creating product:", error);
+    // 에러가 발생하면 에러 로그 출력
+    console.error("상품 등록 에러:", error);
+
+    // 추가적으로 서버에서 받은 에러 메시지도 출력
+    if (error.response) {
+      console.error("서버 에러 메시지:", error.response.data);
+    } else {
+      console.error("네트워크 또는 다른 오류 발생:", error.message);
+    }
+
     throw error;
   }
 };
