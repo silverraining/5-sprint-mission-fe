@@ -140,9 +140,8 @@ export default function ProductDetail({ product, onDelete }) {
             <div className="flex items-center">
               <div className="border-l border-gray-300 mx-2 h-8"></div>
               <HeartTag
-                productId={product.id}
+                product={product}
                 initialFavoriteCount={product.favoriteCount}
-                isFavorited={product.isFavorite}
               />
             </div>
           </div>

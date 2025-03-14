@@ -55,6 +55,8 @@ export function AuthProvider({ children }) {
       return;
     }
     try {
+      console.log("join 호출됨");
+      console.log("BASE_URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
       const res = await signUp({
         email,
         password,

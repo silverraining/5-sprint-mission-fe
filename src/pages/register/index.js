@@ -28,6 +28,7 @@ export default function RegisterPage() {
       setIsModalOpen(true);
     },
     onError: (error) => {
+      console.log("BASE_URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
       console.log("에러 메시지:", error.message); // 에러 메시지 출력
       const errorMessage =
         error.response.data.message || "회원가입에 실패했습니다.";
@@ -38,6 +39,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data) => {
     try {
+      console.log("BASE_URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
       await join(data);
       window.location.href = "/login";
       setModalMessage("가입이 완료되었어요. 로그인 해주세요.");
