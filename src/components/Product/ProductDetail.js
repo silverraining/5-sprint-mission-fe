@@ -116,13 +116,13 @@ export default function ProductDetail({ product, onDelete }) {
             <h2 className="font-semibold mb-3 text-sm">상품 태그</h2>
 
             {product.tags.length > 0 ? (
-              <div className="flex space-x-2 mb-6">
+              <div className="flex space-x-2 mb-30">
                 {product.tags.map((tag, i) => (
                   <Tag key={i} tags={tag} />
                 ))}
               </div>
             ) : (
-              <div className="mb-10 md:mb-44"></div> // 태그가 없을 경우 여백 유지
+              <div className="mb-10 md:mb-44"></div> // 태그가 없을 경우 여백
             )}
           </div>
 

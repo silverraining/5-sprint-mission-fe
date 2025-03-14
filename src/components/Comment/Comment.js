@@ -5,15 +5,29 @@ import { useRouter } from "next/router";
 import { updateComment, deleteComment } from "@/services/api/comment";
 import { timeAgo } from "@/lib/timeAgo";
 import { DoubleCheckModal } from "@/Common/modals/DoubleCheckModal";
+import { Modal } from "@/Common/modals/Modal";
 const defaultProfile = "/ic_profile.png";
 
-export default function Comment({ comment, onDelete, id, onUpdate, type }) {
+export default function Comment({
+  comment,
+  onDelete,
+  id,
+  onUpdate,
+  type,
+  currentUserId,
+}) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
+
   // 수정 모드로 전환
   const handleEdit = () => {
+    if (comment.writer.id !== currentUserId) {
+      setIsPermissionModalOpen(true); // 권한 없으면 모달 열기
+      return;
+    }
     setIsEditing(true);
   };
 
@@ -35,7 +49,11 @@ export default function Comment({ comment, onDelete, id, onUpdate, type }) {
 
   // 댓글 삭제
   const handleDelete = () => {
-    setIsModalOpen(true); // 모달 열기
+    if (comment.writer.id !== currentUserId) {
+      setIsPermissionModalOpen(true); // 권한 없으면 모달 열기
+      return;
+    }
+    setIsModalOpen(true); // 권한 있으면 삭제 확인 모달 열기
   };
 
   // 댓글 삭제 실행
@@ -53,6 +71,11 @@ export default function Comment({ comment, onDelete, id, onUpdate, type }) {
   const cancelDelete = () => {
     setIsModalOpen(false); // 취소 시 모달 닫기
   };
+  // 권한 모달 닫기
+  const cancelPermissionModal = () => {
+    setIsPermissionModalOpen(false);
+  };
+
   return (
     <div className="bg-[#fcfcfc] p-4 mb-4 border-b gap-6">
       <div className="flex justify-between items-center pb-8">
@@ -105,6 +128,14 @@ export default function Comment({ comment, onDelete, id, onUpdate, type }) {
           <div className="text-[#9CA3AF]">{timeAgo(comment.createdAt)}</div>
         </div>
       </div>
+      {/* 권한 모달 */}
+      <Modal
+        isOpen={isPermissionModalOpen}
+        onClose={cancelPermissionModal}
+        message="작성자만 이용이 가능한 기능입니다."
+      />
+
+      {/* 댓글 삭제 모달 */}
       <DoubleCheckModal
         isOpen={isModalOpen}
         onClose={cancelDelete}
