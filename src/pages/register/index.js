@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Modal } from "@/Common/modals/Modal";
 import { useAuth } from "@/contexts/AuthProvider";
-// TODO: 회원가입 실패 메시지 설정
+
 export default function RegisterPage() {
   const { join, modalMessage, setModalMessage, isModalOpen, setIsModalOpen } =
     useAuth();
