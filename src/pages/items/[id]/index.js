@@ -60,6 +60,7 @@ export default function ProductDetailPage({ product, comments }) {
     <TypeProvider type="PRODUCT">
       <ProductDetail product={product} onDelete={() => handleDelete(product)} />
       <CommentSection
+        product={product}
         id={product.id}
         comments={comments}
         label="문의하기"

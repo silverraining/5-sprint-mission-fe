@@ -8,14 +8,11 @@ import { DoubleCheckModal } from "@/Common/modals/DoubleCheckModal";
 import { Modal } from "@/Common/modals/Modal";
 const defaultProfile = "/ic_profile.png";
 
-export default function Comment({
-  comment,
-  onDelete,
-  id,
-  onUpdate,
-  type,
-  currentUserId,
-}) {
+export default function Comment({ comment, onDelete, id, onUpdate, type }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user ? user.id : null;
+  console.log(userId);
+  console.log(comment.writer.id);
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
@@ -24,7 +21,7 @@ export default function Comment({
 
   // 수정 모드로 전환
   const handleEdit = () => {
-    if (comment.writer.id !== currentUserId) {
+    if (comment.writer.id !== userId) {
       setIsPermissionModalOpen(true); // 권한 없으면 모달 열기
       return;
     }
@@ -49,7 +46,7 @@ export default function Comment({
 
   // 댓글 삭제
   const handleDelete = () => {
-    if (comment.writer.id !== currentUserId) {
+    if (comment.writer.id !== userId) {
       setIsPermissionModalOpen(true); // 권한 없으면 모달 열기
       return;
     }
