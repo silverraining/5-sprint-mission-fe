@@ -42,6 +42,19 @@ export const fetchProductById = async (id) => {
   }
 };
 
+// export const toggleFavorite = async ({ productId, isFavorite }) => {
+//   try {
+//     // isFavorite 값을 반전시켜 서버로 보내기
+//     const response = await instance.post(`${BASE_URL}/${productId}/favorite`, {
+//       isFavorite: !isFavorite,
+//     });
+//     return response.data; // 변경된 데이터 반환
+//   } catch (error) {
+//     console.error("Error toggling favorite:", error);
+//     throw error;
+//   }
+// };
+
 export const createProduct = async ({
   name,
   description,
