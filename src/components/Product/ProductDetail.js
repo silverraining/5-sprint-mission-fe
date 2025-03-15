@@ -143,10 +143,7 @@ export default function ProductDetail({ product, onDelete }) {
             </div>
             <div className="flex items-center">
               <div className="border-l border-gray-300 mx-2 h-8"></div>
-              <HeartTag
-                product={product}
-                initialFavoriteCount={product.favoriteCount}
-              />
+              <HeartTag product={product} />
             </div>
           </div>
         </section>
