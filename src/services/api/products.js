@@ -15,17 +15,20 @@ export const fetchProducts = async ({
     const response = await instance.get(apiEndpoint);
 
     if (response.data && Array.isArray(response.data.list)) {
-      return response.data.list;
+      return {
+        list: response.data.list,
+        totalCount: response.data.totalCount || 0, // totalCount 추가
+      };
     } else {
       console.error(
         "API response does not contain a valid list:",
         response.data
       );
-      return [];
+      return { list: [], totalCount: 0 };
     }
   } catch (error) {
     console.error("Error fetching products:", error);
-    return [];
+    return { list: [], totalCount: 0 };
   }
 };
 

@@ -1,19 +1,18 @@
-"use client";
-
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { fetchProducts } from "@/services/api/products";
 import ProductCard from "./ProductCard";
 import Select from "@/components/Select";
 import SearchBar from "@/components/SearchBar";
-// import Pagination from "../feature/Pagination";
+import Pagination from "../Pagination";
 const ProductList = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ list: [], totalCount: 0 });
   const [orderBy, setOrderBy] = useState("recent");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const totalPages = Math.ceil(data.totalCount / itemsPerPage);
   // 검색어 핸들러
   const handleSearchChange = (newSearchTerm) => {
     setSearchTerm(newSearchTerm);
@@ -43,7 +42,7 @@ const ProductList = () => {
         pageSize: itemsPerPage.toString(),
         search: searchTerm,
       });
-      setData(response);
+      setData({ list: response.list, totalCount: response.totalCount });
       console.log("검색어 전달값:", searchTerm);
     } catch (error) {
       console.error("Error fetching page data:", error);
@@ -63,6 +62,10 @@ const ProductList = () => {
   useEffect(() => {
     fetchPageData();
   }, [fetchPageData]);
+
+  const handlePageChange = useCallback((newPage) => {
+    setPage(newPage);
+  }, []);
 
   return (
     <>
@@ -96,16 +99,17 @@ const ProductList = () => {
 
       {/* 아이템 목록 */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:px-6 lg:grid-cols-5 gap-4 w-full mt-6 mb-[43px]">
-        {Array.isArray(data) &&
-          data
-            .slice(0, itemsPerPage)
-            .map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+        {Array.isArray(data.list) &&
+          data.list.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
       </div>
 
-      {/* 페이지네이션
-      <Pagination totalPage={totalPage} onPageChange={setPage} /> */}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </>
   );
 };

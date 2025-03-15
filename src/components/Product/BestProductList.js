@@ -27,16 +27,16 @@ export default function BestProductList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const products = await fetchProducts({ orderBy });
+        const { list, totalCount } = await fetchProducts({ orderBy });
 
-        if (Array.isArray(products)) {
-          setData(products);
+        if (Array.isArray(list)) {
+          setData(list);
         } else {
-          console.error(products);
+          console.error("Invalid data format:", list);
           setData([]);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching data:", error);
         setData([]);
       }
     };

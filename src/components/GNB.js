@@ -45,13 +45,29 @@ export default function GNB() {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const logoSrc = isMobile ? "/logo_mobile.svg" : "/logo.svg";
   const [user, setUser] = useState(null);
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+    const checkUser = () => {
+      if (typeof window !== "undefined") {
+        const storedUser = localStorage.getItem("user");
+        const accessToken = localStorage.getItem("accessToken");
+
+        if (storedUser && accessToken) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          setUser(null);
+        }
       }
-    }
+    };
+
+    checkUser();
+
+    // 다른 탭에서도 localStorage 변경 감지
+    window.addEventListener("storage", checkUser);
+
+    return () => {
+      window.removeEventListener("storage", checkUser);
+    };
   }, []);
   return (
     <header className="w-full h-[70px] flex justify-center sticky border-b border-solid border-gray3 border-[1px] px-4">
