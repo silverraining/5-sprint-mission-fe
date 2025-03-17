@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import ArticleList from "@/components/ArticleList";
+import ArticleList from "@/components/Article/ArticleList";
 import Select from "@/components/Select";
 import SearchBar from "@/components/SearchBar";
-import BestArticleCard from "@/components/BestArticleCard";
+import BestArticleCard from "@/components/Article/BestArticleCard";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
-import { fetchArticles } from "@/pages/api/articles";
+import { fetchArticles } from "@/services/api/articles";
 
 const options = [
   { label: "최신순", value: "createdAt" },
@@ -150,44 +150,44 @@ export default function Community({
   );
 }
 
-export async function getServerSideProps(context) {
-  console.log("✅ getServerSideProps 실행됨");
+// export async function getServerSideProps(context) {
+//   console.log("✅ getServerSideProps 실행됨");
 
-  const { query } = context;
-  const page = query.page || 1;
-  const orderBy = query.orderBy || "createdAt";
-  const searchKeyword = query.search || ""; // 쿼리에서 검색어 받기
-  try {
-    const limit = 10;
-    const response = await fetch(
-      `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}`
-    );
+//   const { query } = context;
+//   const page = query.page || 1;
+//   const orderBy = query.orderBy || "createdAt";
+//   const searchKeyword = query.search || ""; // 쿼리에서 검색어 받기
+//   try {
+//     const limit = 10;
+//     const response = await fetch(
+//       `https://sprint-mission08-be.onrender.com/articles?page=${page}&orderBy=${orderBy}&limit=${limit}`
+//     );
 
-    console.log("📡 API 응답 상태:", response.status); // 응답 상태 확인
-    if (!response.ok) {
-      throw new Error("❌ API 요청 실패, 응답 상태가 좋지 않음");
-    }
+//     console.log("📡 API 응답 상태:", response.status); // 응답 상태 확인
+//     if (!response.ok) {
+//       throw new Error("❌ API 요청 실패, 응답 상태가 좋지 않음");
+//     }
 
-    const data = await response.json();
-    console.log("📡 API 응답 데이터:", data); // 전체 응답 데이터 확인
-    console.log("📜 전체 게시글 데이터:", data.list); // 전체 게시글 데이터 확인
+//     const data = await response.json();
+//     console.log("📡 API 응답 데이터:", data); // 전체 응답 데이터 확인
+//     console.log("📜 전체 게시글 데이터:", data.list); // 전체 게시글 데이터 확인
 
-    return {
-      props: {
-        results: data.list || [],
-        orderBy,
-        totalPages: Math.ceil(data.totalCount / limit) || 1,
-      },
-    };
-  } catch (error) {
-    console.error("❌ API 요청 실패:", error);
-    return {
-      props: {
-        results: [],
-        orderBy,
-        totalPages: 1,
-        allArticles: [],
-      },
-    };
-  }
-}
+//     return {
+//       props: {
+//         results: data.list || [],
+//         orderBy,
+//         totalPages: Math.ceil(data.totalCount / limit) || 1,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("❌ API 요청 실패:", error);
+//     return {
+//       props: {
+//         results: [],
+//         orderBy,
+//         totalPages: 1,
+//         allArticles: [],
+//       },
+//     };
+//   }
+// }

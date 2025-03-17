@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import ArticleCreateForm from "@/components/ArticleCreateForm";
+import ArticleCreateForm from "@/components/Article/ArticleCreateForm";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { createArticle } from "@/pages/api/articles.js";
+import { createArticle } from "@/services/api/articles.js";
 import useDebounce from "@/hooks/useDebounce";
 export default function ArticleCreatePage() {
   const router = useRouter();
