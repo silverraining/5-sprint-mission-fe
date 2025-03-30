@@ -10,13 +10,13 @@ import Image from "next/image";
 export default function ProductEditPage() {
   const [tags, setTags] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
+  const [modalMessage, setModalMessage] = useState("");
   const router = useRouter();
   const { id } = router.query;
   const {
     register,
     handleSubmit,
-    setValue, // setValue를 사용하여 폼 필드 값 업데이트
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -29,14 +29,12 @@ export default function ProductEditPage() {
     },
   });
 
-  // 상품 데이터 불러오기
   useEffect(() => {
     if (id) {
       fetchProductById(id).then((data) => {
         // 데이터가 undefined일 경우 기본값 설정
         const productData = data || {};
 
-        // setValue를 통해 폼 필드 가져오기
         setValue("name", productData.name || "");
         setValue("description", productData.description || "");
         setValue("price", productData.price || "");
@@ -74,7 +72,7 @@ export default function ProductEditPage() {
     const updatedData = {
       ...data,
       id: id,
-      tags: tags || [], // tags가 undefined일 경우 빈 배열로 기본값 설정
+      tags: tags || [], // tags가 undefined일 경우 빈 배열로
     };
     console.log("상품 수정 데이터:", updatedData);
     if (!updatedData.name || !updatedData.description || !updatedData.price) {
@@ -85,14 +83,14 @@ export default function ProductEditPage() {
     mutation.mutate(updatedData);
   };
 
-  // 태그 추가 함수
+  // 태그 추가
   const addTag = (tag) => {
     if (tag && !tags.includes(tag)) {
       setTags([...tags, tag]);
     }
   };
 
-  // 태그 삭제 함수
+  // 태그 삭제
   const removeTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
