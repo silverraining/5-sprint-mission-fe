@@ -137,7 +137,7 @@ export default function Comment({ comment, onDelete, id, onUpdate, type }) {
         isOpen={isModalOpen}
         onClose={cancelDelete}
         onDelete={confirmDelete}
-        message="정말로 댓글을 삭제하시겠어요?"
+        message="정말로 댓글을 삭제하시겠습니까?"
       />
     </div>
   );
