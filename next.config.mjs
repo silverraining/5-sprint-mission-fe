@@ -14,13 +14,10 @@ const nextConfig = {
     return [
       {
         source: "/uploads/:path*",
-        destination: [
-          "http://localhost:8000/uploads/:path*",
-          "https://mission10-be.onrender.com/uploads/:path*",
-        ],
+        destination: "https://mission10-be.onrender.com/uploads/:path*",
       },
     ];
   },
 };
-
+S;
 export default nextConfig;
