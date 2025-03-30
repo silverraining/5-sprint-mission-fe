@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "127.0.0.1"],
+    domains: ["localhost", "127.0.0.1", "https://mission10-be.onrender.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -14,7 +14,10 @@ const nextConfig = {
     return [
       {
         source: "/uploads/:path*",
-        destination: "http://localhost:8000/uploads/:path*",
+        destination: [
+          "http://localhost:8000/uploads/:path*",
+          "https://mission10-be.onrender.com/uploads/:path*",
+        ],
       },
     ];
   },
