@@ -26,7 +26,7 @@ export default function ProductRegisterPage({ product }) {
       name: product?.name || "",
       description: product?.description || "",
       price: product?.price || "",
-      imageUrl: product?.images?.[0] || "",
+
       tags: [], // 첫 번째 이미지 URL 사용
     },
   });
@@ -34,6 +34,8 @@ export default function ProductRegisterPage({ product }) {
   const mutation = useMutation({
     mutationFn: createProduct,
     onSuccess: (data) => {
+      console.log("상품 등록 성공 응답:", data);
+      console.log("이미지 경로:", data.images);
       setModalMessage("상품이 성공적으로 등록되었습니다.");
       setIsModalOpen(true);
       const productId = data.id;
@@ -139,10 +141,10 @@ export default function ProductRegisterPage({ product }) {
   };
   return (
     <AuthLayout>
-      <div className="flex flex-col items-center min-h-screen px-4 py-20">
+      <div className="flex flex-col items-center min-h-screen px-4 ">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-md bg-white p-6 rounded-md"
+          className="w-full max-w-md md:max-w-xl lg:max-w-[1200px] bg-white p-6 rounded-md"
         >
           <div className="w-full flex justify-between">
             <h1 className="text-2xl whitespace-nowrap font-bold mb-8">
@@ -263,28 +265,6 @@ export default function ProductRegisterPage({ product }) {
             {errors.price && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.price.message}
-              </p>
-            )}
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 font-bold mb-2">
-              이미지 URL
-            </label>
-            <input
-              type="url"
-              {...register("imageUrl", {
-                required: "이미지 URL을 입력해주세요.",
-                pattern: {
-                  value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
-                  message: "유효한 URL 형식이 아닙니다.",
-                },
-              })}
-              className="w-full p-3 rounded-md focus:ring bg-[#F3F4F6] focus:ring-blue-300"
-              placeholder="이미지 URL을 입력해주세요"
-            />
-            {errors.imageUrl && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.imageUrl.message}
               </p>
             )}
           </div>

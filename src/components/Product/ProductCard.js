@@ -9,7 +9,7 @@ const customLoader = ({ src }) => {
 const ProductCard = ({ product }) => {
   if (!product) return null;
 
-  const { images, name, price, favoriteCount } = product;
+  const { images, name, price, likeCount } = product;
 
   const [imgSrc, setImgSrc] = useState(
     images && images.length > 0 ? images[0] : "/img_default.png"
@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
               height={16}
             />
             <p className="text-xs font-medium leading-[18px] text-gray-600">
-              {favoriteCount}
+              {likeCount}
             </p>
           </div>
         </div>
