@@ -11,12 +11,11 @@ const ProductCard = ({ product }) => {
 
   const { images, name, price, favoriteCount } = product;
 
-  // 이미지가 없으면 기본 이미지를 사용
   const [imgSrc, setImgSrc] = useState(
     images && images.length > 0 ? images[0] : "/img_default.png"
   );
 
-  // 이미지 로딩 실패 시 기본 이미지로 교체
+  // 이미지 로딩 실패 시 기본 이미지로
   const handleImageError = () => {
     setImgSrc("/img_default.png");
   };
@@ -30,7 +29,7 @@ const ProductCard = ({ product }) => {
           className="block rounded-xl shadow-md w-full mb-4 aspect-square"
           width={300}
           height={300}
-          onError={handleImageError} // 이미지 로딩 실패 시 기본 이미지
+          onError={handleImageError}
         />
         <div className="flex flex-col text-gray-800 gap-[6px]">
           <p className="font-medium text-sm self-start">{name}</p>
