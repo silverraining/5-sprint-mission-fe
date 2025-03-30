@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState, useRef } from "react"; // useRef를 추가해야 합니다
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Modal } from "@/Common/modals/Modal";
 import { createProduct } from "@/services/api/products";
@@ -9,9 +9,9 @@ import Image from "next/image";
 export default function ProductRegisterPage({ product }) {
   const [tags, setTags] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
+  const [modalMessage, setModalMessage] = useState("");
   const [imageFiles, setImageFiles] = useState([]); // 이미지 파일 배열로 저장
-  const [imagePreviews, setImagePreviews] = useState([]); //이미지 미리보기 배열
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   // useRef 훅으로 fileInputRef 정의
   const fileInputRef = useRef(null);
@@ -38,7 +38,7 @@ export default function ProductRegisterPage({ product }) {
       console.log("이미지 경로:", data.images);
       setModalMessage("상품이 성공적으로 등록되었습니다.");
       setIsModalOpen(true);
-      const productId = data.id; //
+      const productId = data.id;
       router.push(`/items/${productId}`);
     },
     onError: (error) => {
@@ -56,7 +56,6 @@ export default function ProductRegisterPage({ product }) {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
 
-    // 이미지는 최대 3개까지만 선택 가능
     if (imageFiles.length + files.length > 3) {
       setModalMessage("이미지는 최대 3개까지만 업로드할 수 있습니다.");
       setIsModalOpen(true);
@@ -66,14 +65,13 @@ export default function ProductRegisterPage({ product }) {
     const newImageFiles = [...imageFiles, ...files];
     setImageFiles(newImageFiles);
 
-    // 이미지 미리보기 생성
     const newPreviews = [...imagePreviews];
 
     files.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (event) => {
         newPreviews.push({
-          id: Math.random().toString(36).substring(7), // 간단한 고유 ID 생성
+          id: Math.random().toString(36).substring(7), // 랜덤 ID 생성
           src: event.target.result,
           file: file,
         });
@@ -82,22 +80,20 @@ export default function ProductRegisterPage({ product }) {
       reader.readAsDataURL(file);
     });
 
-    // 파일 인풋 초기화 (동일한 파일 다시 선택 가능하도록)
+    // 파일 인풋 초기화
     e.target.value = "";
   };
 
-  // 이미지 업로드 버튼 클릭 핸들러
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
-  // 이미지 미리보기 제거
+  /// 이미지 미리보기 삭제 핸들러
   const removeImagePreview = (id) => {
     const updatedPreviews = imagePreviews.filter(
       (preview) => preview.id !== id
     );
     setImagePreviews(updatedPreviews);
 
-    // 파일 배열도 업데이트
     const updatedFiles = imageFiles.filter(
       (file) =>
         !imagePreviews.find(
@@ -108,7 +104,6 @@ export default function ProductRegisterPage({ product }) {
   };
 
   const onSubmit = (data) => {
-    // FormData 객체 생성
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
@@ -125,7 +120,7 @@ export default function ProductRegisterPage({ product }) {
         formData.append("images", file);
       });
     } else {
-      // 이미지가 없는 경우 빈 배열을 명시적으로 전달
+      // 이미지가 없는 경우 빈 배열
       formData.append("images", JSON.stringify([]));
     }
 
@@ -133,14 +128,14 @@ export default function ProductRegisterPage({ product }) {
     mutation.mutate(formData);
   };
 
-  // 태그 추가 함수
+  // 태그 추가
   const addTag = (tag) => {
     if (tag && !tags.includes(tag)) {
       setTags([...tags, tag]);
     }
   };
 
-  // 태그 삭제 함수
+  // 태그 삭제
   const removeTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
@@ -202,7 +197,7 @@ export default function ProductRegisterPage({ product }) {
                   </div>
                 ))}
 
-                {/* 이미지 추가 버튼 - 3개 미만일 때만 표시 */}
+                {/* 이미지 추가 버튼 3개 미만일 때만 표시 */}
                 {imagePreviews.length < 3 && (
                   <label className="w-[282px] h-[282px] rounded-2xl flex flex-col items-center justify-center bg-gray-100 border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-200 transition">
                     <span className="text-gray-400 text-4xl mb-2">+</span>
