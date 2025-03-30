@@ -40,7 +40,6 @@ export default function ProductDetailPage({ product, comments }) {
     }
   };
 
-  // 로그인 모달을 닫고 로그인 페이지로 이동
   const handleLoginRedirect = () => {
     setIsLoginModalOpen(false);
     router.push("/login"); // 로그인 페이지로 리다이렉트

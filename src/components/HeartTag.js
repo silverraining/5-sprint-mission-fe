@@ -39,20 +39,6 @@ export default function HeartTag({ product }) {
         "좋아요 처리 실패:",
         error.response?.data?.message || error
       );
-
-      // 개발 환경에서 상세 오류 표시
-      if (process.env.NODE_ENV === "development") {
-        console.log("API 오류 상세:", {
-          status: error.response?.status,
-          message: error.response?.data?.message,
-          error: error.message,
-        });
-
-        // 임시 UI 업데이트 (API 오류가 계속되는 경우)
-        // 실제 API가 완성되기 전까지만 사용
-        setIsLiked((prev) => !prev);
-        setLikeCount((prev) => (isLiked ? Math.max(0, prev - 1) : prev + 1));
-      }
     } finally {
       setIsLoading(false);
     }
